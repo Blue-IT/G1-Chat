@@ -37,3 +37,4 @@ captures/
 # Android Studio Idea files
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/gradle.xml
