@@ -28,6 +28,9 @@ import javax.crypto.NoSuchPaddingException;
  */
 public class SecurityUtil
 {
+    // This is a static class
+    private SecurityUtil() { }
+
     // Debug tag
     public static final String TAG = "SecurityUtil";
 
