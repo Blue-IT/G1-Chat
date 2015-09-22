@@ -5,4 +5,8 @@
     <string name="layout_login_username">Username</string>
     <string name="layout_login_password">Password</string>
     <string name="layout_login_button_submit">Login</string>
+    <string name="title_activity_newsflash">Newsflash</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>
