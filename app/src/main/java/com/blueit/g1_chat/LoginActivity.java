@@ -18,7 +18,7 @@ public class LoginActivity extends Activity
     }
 
     public void onClickLogin(View view) {
-        // Should proceed to main chat interface
+        // Should contact server  to login and then proceed to main chat interface
         Log.d("G1CHAT", "onClickLogin ");
     }
 }
