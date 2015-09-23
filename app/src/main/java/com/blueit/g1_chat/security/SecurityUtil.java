@@ -35,10 +35,10 @@ public class SecurityUtil
     public static final String TAG = "SecurityUtil";
 
     public static void debug() {
-        KeyPair key = SecurityUtil.generateRSAKey();
+        KeyPair key = SecurityUtil.RSAGenerateKey();
         String message = "Hello RSA Cryptography!";
-        String encrypted = SecurityUtil.encryptRSA(key.getPublic(), message);
-        String decrypted = SecurityUtil.decryptRSA(key.getPrivate(), encrypted);
+        String encrypted = SecurityUtil.RSAEncrypt(key.getPublic(), message);
+        String decrypted = SecurityUtil.RSADecrypt(key.getPrivate(), encrypted);
 
         String TAG = SecurityUtil.TAG + ".debug()";
         Log.d(TAG, "  Message: '" + message + "'");
@@ -56,7 +56,10 @@ public class SecurityUtil
      * @param data The clear data to encrypt.
      * @return The encrypted data.
      */
-    public static byte[] encryptAES(byte[] key, byte[] data) {
+    public static String AESEncrypt(byte[] key, String data) {
+        return new String(AESEncrypt(key, data.getBytes()));
+    }
+    public static byte[] AESEncrypt(byte[] key, byte[] data) {
         throw new UnsupportedOperationException("encryptAES() is not yet implemented!");
     }
 
@@ -67,7 +70,10 @@ public class SecurityUtil
      * @param data The encrypted data to decrypt.
      * @return The decrypted data.
      */
-    public static byte[] decryptAES(byte[] key, byte[] data) {
+    public static String AESDecrypt(byte[] key, String data) {
+        return new String(AESDecrypt(key, data.getBytes()));
+    }
+    public static byte[] AESDecrypt(byte[] key, byte[] data) {
         throw new UnsupportedOperationException("decryptAES() is not yet implemented!");
     }
 
@@ -78,10 +84,10 @@ public class SecurityUtil
      * @param data The clear data to encrypt.
      * @return The encrypted data.
      */
-    public static String encryptRSA(PublicKey key, String data) {
-        return new String(encryptRSA(key, data.getBytes()));
+    public static String RSAEncrypt(PublicKey key, String data) {
+        return new String(RSAEncrypt(key, data.getBytes()));
     }
-    public static byte[] encryptRSA(PublicKey key, byte[] data) {
+    public static byte[] RSAEncrypt(PublicKey key, byte[] data) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -108,10 +114,10 @@ public class SecurityUtil
      * @param data The encrypted data to decrypt.
      * @return The decrypted data.
      */
-    public static String decryptRSA(PrivateKey key, String data) {
-        return new String(decryptRSA(key, data.getBytes()));
+    public static String RSADecrypt(PrivateKey key, String data) {
+        return new String(RSADecrypt(key, data.getBytes()));
     }
-    public static byte[] decryptRSA(PrivateKey key, byte[] data) {
+    public static byte[] RSADecrypt(PrivateKey key, byte[] data) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, key);
@@ -136,7 +142,7 @@ public class SecurityUtil
      *
      * @return The generated RSA keys.
      */
-    public static KeyPair generateRSAKey() {
+    public static KeyPair RSAGenerateKey() {
         try {
             // Create and initialize key generator
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
@@ -161,7 +167,7 @@ public class SecurityUtil
      * @param modulus The public key modulus.
      * @return The public key object.
      */
-    public static PublicKey createPublicKey(BigInteger exponent, BigInteger modulus) {
+    public static PublicKey RSACreatePublicKey(BigInteger exponent, BigInteger modulus) {
         try {
             RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, exponent);
             KeyFactory fact = KeyFactory.getInstance("RSA");
@@ -180,7 +186,7 @@ public class SecurityUtil
      * @param modulus The private key modulus.
      * @return The private key object.
      */
-    public static PrivateKey createPrivateKey(BigInteger exponent, BigInteger modulus) {
+    public static PrivateKey RSACreatePrivateKey(BigInteger exponent, BigInteger modulus) {
         try {
             RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(modulus, exponent);
             KeyFactory fact = KeyFactory.getInstance("RSA");
