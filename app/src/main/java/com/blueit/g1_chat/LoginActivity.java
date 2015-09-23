@@ -18,6 +18,5 @@ public class LoginActivity extends Activity
 
     public void onClickLogin(View view) {
         // TODO: Should contact server to login and then proceed to main chat interface
-        SecurityUtil.debug();
     }
 }
