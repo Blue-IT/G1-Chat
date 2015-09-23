@@ -46,6 +46,7 @@ captures/
 
 # Android Studio / IntelliJ IDEA 
 *.iws
+.idea/dictionaries
 .idea/libraries
 .idea/gradle.xml
 .idea/tasks.xml
