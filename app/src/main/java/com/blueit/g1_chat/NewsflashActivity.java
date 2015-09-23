@@ -90,6 +90,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         Log.d("G1CHAT", "CreateNewsflash");
         Log.d("G1CHAT", input);
         if (input == null || input == "") {
+
             Log.d("G1CHAT", "Early exit");
             return;
         }
