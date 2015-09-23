@@ -1,4 +1,4 @@
-package com.blueit.g1_chat.util;
+package com.blueit.g1_chat.security;
 
 import android.util.Base64;
 import android.util.Log;
@@ -35,39 +35,19 @@ public class SecurityUtil
     public static final String TAG = "SecurityUtil";
 
     public static void debug() {
-        SecurityUtil.RSAKey key = SecurityUtil.generateRSAKey();
+        KeyPair key = SecurityUtil.generateRSAKey();
         String message = "Hello RSA Cryptography!";
-        String encrypted = SecurityUtil.encryptRSA(key.getPublicKey(), message);
-        String decrypted = SecurityUtil.decryptRSA(key.getPrivateKey(), encrypted);
+        String encrypted = SecurityUtil.encryptRSA(key.getPublic(), message);
+        String decrypted = SecurityUtil.decryptRSA(key.getPrivate(), encrypted);
 
-        Log.d(SecurityUtil.TAG, "  Message: " + message);
-        Log.d(SecurityUtil.TAG, "Encrypted: " + encrypted);
-        Log.d(SecurityUtil.TAG, "Decrypted: " + decrypted);
+        String TAG = SecurityUtil.TAG + ".debug()";
+        Log.d(TAG, "  Message: '" + message + "'");
+        Log.d(TAG, "Encrypted: '" + encrypted + "'");
+        Log.d(TAG, "Decrypted: '" + decrypted + "'");
     }
 
     // 1024 bit key, fast and sufficiently secure
     public static final int RSA_KEY_BITLENGTH = 1024;
-
-    /**
-     * The RSAKey class contains the key pair used in RSA algorithm, a public and a private key.
-     */
-    public static class RSAKey {
-        private PrivateKey privateKey;
-        private PublicKey publicKey;
-
-        private RSAKey(PrivateKey privateKey, PublicKey publicKey) {
-            this.privateKey = privateKey;
-            this.publicKey = publicKey;
-        }
-
-        public PublicKey getPublicKey() {
-            return publicKey;
-        }
-
-        public PrivateKey getPrivateKey() {
-            return privateKey;
-        }
-    }
 
     /**
      * Encrypts the data with the key using AES algorithm.
@@ -106,6 +86,7 @@ public class SecurityUtil
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, key);
 
+            // Encrypt the data and encode it using Base64
             byte[] encrypted = cipher.doFinal(data);
             byte[] encoded = Base64.encode(encrypted, Base64.DEFAULT);
             return encoded;
@@ -135,6 +116,7 @@ public class SecurityUtil
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, key);
 
+            // Decode the data using Base64 and decrypt it
             byte[] decoded = Base64.decode(data, Base64.DEFAULT);
             byte[] decrypted = cipher.doFinal(decoded);
             return decrypted;
@@ -154,7 +136,7 @@ public class SecurityUtil
      *
      * @return The generated RSA keys.
      */
-    public static RSAKey generateRSAKey() {
+    public static KeyPair generateRSAKey() {
         try {
             // Create and initialize key generator
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
@@ -162,10 +144,8 @@ public class SecurityUtil
 
             // Generate keys and extract the public and private key
             KeyPair key = keyGen.generateKeyPair();
-            PublicKey publicKey = key.getPublic();
-            PrivateKey privateKey = key.getPrivate();
 
-            return new RSAKey(privateKey, publicKey);
+            return key;
         }
         catch (NoSuchAlgorithmException ex) {
             // This should never happen!
