@@ -9,29 +9,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/layout_login_title"
+        android:text="@string/login_title"
         android:id="@+id/textView3"
         android:layout_gravity="center_horizontal" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText3"
-        android:hint="@string/layout_login_username" />
+        android:id="@+id/name_text"
+        android:hint="@string/login_username" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:id="@+id/editText4"
-        android:hint="@string/layout_login_password" />
+        android:id="@+id/pass_text"
+        android:hint="@string/login_password" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/layout_login_button_submit"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onClickLogin" />
+        android:text="@string/login_button_submit"
+        android:id="@+id/sign_in_button"
+        android:layout_gravity="center_horizontal"/>
 </LinearLayout>
