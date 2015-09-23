@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
-public class NewsflashActivity extends Activity implements View.OnClickListener {
+public class NewsflashActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText newsflashText;
 
