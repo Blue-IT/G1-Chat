@@ -70,8 +70,7 @@ public class NewsflashActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            ParseUser.getCurrentUser().logOut();
-            startActivity(new Intent(NewsFlashActivity.this, LoginActivity.class));
+            logout();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -88,7 +87,7 @@ public class NewsflashActivity extends Activity {
 
     }
 
-      public void createNewsflash()
+    public void createNewsflash()
     {
         // Get input
         String input = newsflashText.getText().toString();
@@ -108,6 +107,13 @@ public class NewsflashActivity extends Activity {
         Log.d("G1CHAT", "Newsflash created!");
         // Reset input
         newsflashText.setText("");
+    }
+
+
+    public void logout(View view) {
+        ParseUser.getCurrentUser().logOut();
+        Intent intent = new Intent(NewsFlashActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 
     /**

@@ -4,9 +4,6 @@ import android.app.Application;
 
 import com.parse.Parse;
 
-/**
- * Created by alex on 22/09/15.
- */
 public class DBApp extends Application {
     @Override
     public void onCreate()
