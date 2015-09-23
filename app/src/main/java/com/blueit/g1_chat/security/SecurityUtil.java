@@ -3,7 +3,11 @@ package com.blueit.g1_chat.security;
 import android.util.Base64;
 import android.util.Log;
 
+import static com.tozny.crypto.android.AesCbcWithIntegrity.*;
+
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -35,12 +39,27 @@ public class SecurityUtil
     public static final String TAG = "SecurityUtil";
 
     public static void debug() {
-        KeyPair key = SecurityUtil.RSAGenerateKey();
-        String message = "Hello RSA Cryptography!";
-        String encrypted = SecurityUtil.RSAEncrypt(key.getPublic(), message);
-        String decrypted = SecurityUtil.RSADecrypt(key.getPrivate(), encrypted);
+        Log.d(TAG, "Beginning AES debug...");
+        AESDebug();
+        Log.d(TAG, "Beginning RSA debug...");
+        RSADebug();
+    }
+    public static void AESDebug() {
+        AESKey key = AESGenerateKey();
+        String message = "Hello AES Cryptography!";
+        String encrypted = AESEncrypt(key, message);
+        String decrypted = AESDecrypt(key, encrypted);
 
-        String TAG = SecurityUtil.TAG + ".debug()";
+        Log.d(TAG, "  Message: '" + message + "'");
+        Log.d(TAG, "Encrypted: '" + encrypted + "'");
+        Log.d(TAG, "Decrypted: '" + decrypted + "'");
+    }
+    public static void RSADebug() {
+        RSAKey key = RSAGenerateKey();
+        String message = "Hello RSA Cryptography!";
+        String encrypted = RSAEncrypt(key.getPublic(), message);
+        String decrypted = RSADecrypt(key.getPrivate(), encrypted);
+
         Log.d(TAG, "  Message: '" + message + "'");
         Log.d(TAG, "Encrypted: '" + encrypted + "'");
         Log.d(TAG, "Decrypted: '" + decrypted + "'");
@@ -56,11 +75,25 @@ public class SecurityUtil
      * @param data The clear data to encrypt.
      * @return The encrypted data.
      */
-    public static String AESEncrypt(byte[] key, String data) {
-        return new String(AESEncrypt(key, data.getBytes()));
+    public static String AESEncrypt(AESKey key, String data) {
+        try {
+            CipherTextIvMac cipherText = encrypt(data, key.secretKeys);
+            return cipherText.toString();
+        }
+        catch (GeneralSecurityException | UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
-    public static byte[] AESEncrypt(byte[] key, byte[] data) {
-        throw new UnsupportedOperationException("encryptAES() is not yet implemented!");
+    public static byte[] AESEncrypt(AESKey key, byte[] data) {
+        try {
+            CipherTextIvMac cipherText = encrypt(data, key.secretKeys);
+            return cipherText.toString().getBytes();
+        }
+        catch (GeneralSecurityException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -70,11 +103,41 @@ public class SecurityUtil
      * @param data The encrypted data to decrypt.
      * @return The decrypted data.
      */
-    public static String AESDecrypt(byte[] key, String data) {
-        return new String(AESDecrypt(key, data.getBytes()));
+    public static String AESDecrypt(AESKey key, String data) {
+        try {
+            CipherTextIvMac cipherText = new CipherTextIvMac(data);
+            return decryptString(cipherText, key.secretKeys);
+        }
+        catch (GeneralSecurityException | UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
-    public static byte[] AESDecrypt(byte[] key, byte[] data) {
-        throw new UnsupportedOperationException("decryptAES() is not yet implemented!");
+    public static byte[] AESDecrypt(AESKey key, byte[] data) {
+        try {
+            CipherTextIvMac cipherText = new CipherTextIvMac(new String(data));
+            return decrypt(cipherText, key.secretKeys);
+        }
+        catch (GeneralSecurityException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Generates a new AES crypto-key.
+     *
+     * @return The new AES key.
+     */
+    public static AESKey AESGenerateKey() {
+        try {
+            SecretKeys keys = generateKey();
+            return new AESKey(keys);
+        }
+        catch (GeneralSecurityException ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -142,16 +205,16 @@ public class SecurityUtil
      *
      * @return The generated RSA keys.
      */
-    public static KeyPair RSAGenerateKey() {
+    public static RSAKey RSAGenerateKey() {
         try {
             // Create and initialize key generator
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
             keyGen.initialize(RSA_KEY_BITLENGTH);
 
             // Generate keys and extract the public and private key
-            KeyPair key = keyGen.generateKeyPair();
+            KeyPair keys = keyGen.generateKeyPair();
 
-            return key;
+            return new RSAKey(keys);
         }
         catch (NoSuchAlgorithmException ex) {
             // This should never happen!
