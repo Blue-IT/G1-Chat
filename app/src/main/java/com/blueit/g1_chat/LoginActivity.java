@@ -2,10 +2,9 @@ package com.blueit.g1_chat;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
+
+import com.blueit.g1_chat.security.SecurityUtil;
 
 public class LoginActivity extends Activity
 {
@@ -18,7 +17,6 @@ public class LoginActivity extends Activity
     }
 
     public void onClickLogin(View view) {
-        // Should contact server to login and then proceed to main chat interface
-        Log.d("G1CHAT", "onClickLogin ");
+        // TODO: Should contact server to login and then proceed to main chat interface
     }
 }
