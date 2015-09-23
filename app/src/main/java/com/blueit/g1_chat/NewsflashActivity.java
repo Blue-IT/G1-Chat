@@ -1,5 +1,11 @@
 package com.blueit.g1_chat;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -11,9 +17,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+
+
 import java.util.ArrayList;
 
-public class NewsflashActivity extends AppCompatActivity implements View.OnClickListener {
+import com.parse.Parse;
+import com.parse.ParseUser;
+
+public class NewsflashActivity extends Activity {
 
     private EditText newsflashText;
 
@@ -24,10 +35,10 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set view
+         // Set view
         setContentView(R.layout.activity_newsflash);
 
-        // Initialize text field
+         // Initialize text field
         newsflashText = (EditText) findViewById(R.id.newsflash_text);
         newsflashText.setInputType(InputType.TYPE_CLASS_TEXT
                        | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
@@ -45,28 +56,24 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
         // Setup submit button
         setClick(R.id.newsflash_submit);
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu
         getMenuInflater().inflate(R.menu.menu_newsflash, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            ParseUser.getCurrentUser().logOut();
+            startActivity(new Intent(NewsFlashActivity.this, LoginActivity.class));
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -81,7 +88,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    public void createNewsflash()
+      public void createNewsflash()
     {
         // Get input
         String input = newsflashText.getText().toString();
@@ -117,4 +124,5 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
             v.setOnClickListener(this);
         return v;
     }
+
 }
