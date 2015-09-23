@@ -1,6 +1,7 @@
 package com.blueit.g1_chat;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
-public class NewsflashActivity extends Activity {
+public class NewsflashActivity extends Activity implements View.OnClickListener {
 
     private EditText newsflashText;
 
@@ -70,6 +71,10 @@ public class NewsflashActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Log.d("G1CHAT", "Settings button pressed");
+            return true;
+        }
+        else if (id == R.id.action_logout) {
             logout();
             return true;
         }
@@ -110,9 +115,9 @@ public class NewsflashActivity extends Activity {
     }
 
 
-    public void logout(View view) {
+    public void logout() {
         ParseUser.getCurrentUser().logOut();
-        Intent intent = new Intent(NewsFlashActivity.this, LoginActivity.class);
+        Intent intent = new Intent(NewsflashActivity.this, LoginActivity.class);
         startActivity(intent);
     }
 

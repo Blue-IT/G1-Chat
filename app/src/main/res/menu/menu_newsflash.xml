@@ -4,4 +4,9 @@
     tools:context="com.blueit.g1_chat.NewsflashActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_logout"
+        android:title="@string/logout"
+        android:visible="true"
+        android:orderInCategory="100"
+        app:showAsAction="always|withText"/>
 </menu>
