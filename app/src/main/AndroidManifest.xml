@@ -24,6 +24,10 @@
             android:name=".NewsflashActivity"
             android:label="@string/title_activity_newsflash" >
         </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/activity_register">
+        </activity>
     </application>
 
 </manifest>
