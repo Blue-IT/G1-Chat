@@ -22,15 +22,23 @@ import android.widget.RelativeLayout;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import com.blueit.g1_chat.parseobjects.Newsflash;
 
 public class NewsflashActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private View rootView; //
+
+    static final int CREATE_NEWSFLASH_REQUEST = 1;  // The request code
+
     private EditText newsflashText;
     private ArrayList<String> TEMP_newsflashTable;
     private ArrayAdapter<String> TEMP_newsflashTableAdapter;
@@ -125,13 +133,13 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         String input = newsflashText.getText().toString();
 
         // Validate
-        Log.d("G1CHAT", "CreateNewsflash");
-        Log.d("G1CHAT", input);
-        if (input == null || input == "") {
-
-            Log.d("G1CHAT", "Early exit");
+        if (input.equals("") ) {
             return;
         }
+
+        // Start create newsflash activity
+        Intent intent = new Intent(NewsflashActivity.this, CreateNewsflashActivity.class);
+        startActivityForResult(intent, CREATE_NEWSFLASH_REQUEST);
 
         // Create and insert
         TEMP_newsflashTable.add(input);
@@ -141,13 +149,34 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         // Reset input
         newsflashText.setText("");
 
-        Newsflash entry = new Newsflash();
-        entry.setTitle("Newsflash");
-        entry.setContent(input);
-
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Request
+        if (requestCode == CREATE_NEWSFLASH_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                String id = data.getStringExtra("id");
+
+                ParseQuery<Newsflash> query = ParseQuery.getQuery(Newsflash.class);
+                query.whereEqualTo("id", id);
+                query.getFirstInBackground(new GetCallback<Newsflash>() {
+                    @Override
+                    public void done(Newsflash parseObject, ParseException e) {
+                        TEMP_newsflashTable.add(parseObject.getTitle());
+                        TEMP_newsflashTableAdapter.notifyDataSetChanged();
+                    }
+                });
+
+            }
+
+            else {
+
+            }
+        }
+    }
 
     public void logout() {
         ParseUser.getCurrentUser().logOut();
