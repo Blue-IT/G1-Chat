@@ -92,6 +92,9 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
         // Setup submit button
         setClick(R.id.newsflash_submit);
+
+        // Setup parse
+        ParseObject.registerSubclass(Newsflash.class);
     }
 
 
@@ -148,8 +151,6 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
         // Reset input
         newsflashText.setText("");
-
-
     }
 
     @Override
