@@ -4,7 +4,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.blueit.g1_chat.NewsflashActivity">
+    tools:context="com.blueit.g1_chat.NewsflashActivity"
+    android:id="@+id/newsflash_layout">
 
     <ListView
         android:layout_width="wrap_content"
@@ -15,28 +16,5 @@
         android:layout_above="@+id/newsflash_submit"
         android:layout_marginBottom="10dp"
         tools:listitem="@android:layout/simple_list_item_1" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/newsflash_text"
-        android:hint="Newsflash"
-
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/newsflash_submit"
-
-        />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:id="@+id/newsflash_submit"
-
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-
-        />
 
 </RelativeLayout>
