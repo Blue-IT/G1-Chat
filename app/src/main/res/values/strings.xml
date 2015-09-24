@@ -15,4 +15,6 @@
     <string name="create_newsflash_title_hint">Title</string>
     <string name="create_newsflash_content_hint">Content</string>
     <string name="create_newsflash_submit">Submit</string>
+    <string name="create_newsflash">Create Newsflash</string>
+    <string name="err_create_newsflash">Newsflash was not created.</string>
 </resources>

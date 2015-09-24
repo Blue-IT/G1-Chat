@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.blueit.g1_chat.parseobjects.Newsflash;
 import com.parse.ParseException;
@@ -78,6 +79,8 @@ public class CreateNewsflashActivity extends AppCompatActivity implements View.O
 
         // Verify
         if (title.equals("") || content.equals("")) {
+            Toast.makeText(CreateNewsflashActivity.this, R.string.err_fields_empty, Toast.LENGTH_LONG)
+                    .show();
             return;
         }
 

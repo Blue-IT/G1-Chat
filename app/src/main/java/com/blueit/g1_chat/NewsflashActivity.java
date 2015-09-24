@@ -9,10 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -32,7 +35,6 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
     static final int CREATE_NEWSFLASH_REQUEST = 1;  // The request code
 
-    private EditText newsflashText;
     private ArrayList<Newsflash> newsflashArrayList;
     private ArrayAdapter<Newsflash> newsflashArrayAdapter;
 
@@ -57,13 +59,13 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                 // Then immediately set our content view to the returned combined view, so that other function calls do not need a reference.
                 setContentView(getLayoutInflater().inflate(R.layout.activity_newsflash_admin, layout, true));
 
-                // Initialize admin text field
-                newsflashText = (EditText) findViewById(R.id.newsflash_text);
-                newsflashText.setInputType(InputType.TYPE_CLASS_TEXT
-                               | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        
-                // Setup admin submit button
+                // Setup admin create newsflash button
                 setClick(R.id.newsflash_submit);
+
+                // Update list height
+                //ListView list = (ListView) findViewById(R.id.newsflash_list);
+                //FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)list.getLayoutParams();
+                //(RelativeLayout.BELOW, R.id.newsflash_submit);
             }
 
         }
@@ -136,17 +138,6 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
     public void createNewsflash()
     {
-        // Get input
-        String input = newsflashText.getText().toString();
-
-        // Validate
-        if (input.equals("") ) {
-            return;
-        }
-
-        // Reset input
-        newsflashText.setText("");
-
         // Start create newsflash activity
         Intent intent = new Intent(NewsflashActivity.this, CreateNewsflashActivity.class);
         startActivityForResult(intent, CREATE_NEWSFLASH_REQUEST);
@@ -169,11 +160,11 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                         newsflashArrayAdapter.notifyDataSetChanged();
                     }
                 });
-
             }
-
+            // Could not create newsflash
             else {
-
+                Toast.makeText(NewsflashActivity.this, R.string.err_create_newsflash, Toast.LENGTH_LONG)
+                        .show();
             }
         }
     }
