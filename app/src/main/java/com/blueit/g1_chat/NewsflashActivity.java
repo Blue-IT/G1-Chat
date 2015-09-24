@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import com.parse.Parse;
 import com.parse.ParseUser;
 
+import com.blueit.g1_chat.parseobjects.Newsflash;
+
 public class NewsflashActivity extends AppCompatActivity implements View.OnClickListener {
 
     private View rootView; //
@@ -80,6 +82,8 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         ListView listView = (ListView) findViewById(R.id.newsflash_list);
         listView.setAdapter(TEMP_newsflashTableAdapter);
 
+        // Setup submit button
+        setClick(R.id.newsflash_submit);
     }
 
 
@@ -133,8 +137,15 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         TEMP_newsflashTable.add(input);
         TEMP_newsflashTableAdapter.notifyDataSetChanged();
         Log.d("G1CHAT", "Newsflash created!");
+
         // Reset input
         newsflashText.setText("");
+
+        Newsflash entry = new Newsflash();
+        entry.setTitle("Newsflash");
+        entry.setContent(input);
+
+
     }
 
 
