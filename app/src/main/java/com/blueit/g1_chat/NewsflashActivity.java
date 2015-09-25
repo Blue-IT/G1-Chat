@@ -117,7 +117,6 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         ParseObject.registerSubclass(Newsflash.class);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(ParseUser.getCurrentUser().getBoolean("isAdmin")) {
