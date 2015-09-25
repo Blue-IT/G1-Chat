@@ -55,17 +55,30 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                 // Get reference to our current layout
                 RelativeLayout layout = (RelativeLayout)findViewById(R.id.newsflash_layout);
 
-                // "Inflate" the admin view, attaching it as a child to our layout through the layout reference
-                // Then immediately set our content view to the returned combined view, so that other function calls do not need a reference.
-                setContentView(getLayoutInflater().inflate(R.layout.activity_newsflash_admin, layout, true));
+                // "Inflate" the admin layout without attaching it to our current view
+                ViewGroup adminLayout = (ViewGroup)getLayoutInflater().inflate(R.layout.activity_newsflash_admin, layout, false);
+
+                // For each child of the admin layout
+                for(int i=0; i<(adminLayout).getChildCount(); ++i) {
+                    // Get reference to the child
+                    View child = (adminLayout).getChildAt(i);
+
+                    // Remove child from admin layout
+                    adminLayout.removeView(child);
+
+                    // Add child to the current layout
+                    layout.addView(child);
+                }
+
+                // Set the list element from the main layout to be drawn relatively to the create newsflash button from the admin layout
+                ListView list = (ListView) findViewById(R.id.newsflash_list);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                params.addRule(RelativeLayout.ABOVE, R.id.newsflash_submit);
+                list.setLayoutParams(params);
 
                 // Setup admin create newsflash button
                 setClick(R.id.newsflash_submit);
-
-                // Update list height
-                //ListView list = (ListView) findViewById(R.id.newsflash_list);
-                //FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)list.getLayoutParams();
-                //(RelativeLayout.BELOW, R.id.newsflash_submit);
             }
 
         }
