@@ -1,11 +1,13 @@
 package com.blueit.g1_chat;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -15,14 +17,17 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserListActivity extends ListActivity {
+public class UserListActivity extends Activity {
 
-    List<User> users = new ArrayList<User>();
+    List<String> users = new ArrayList<String>();
+    ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
+
+        list = (ListView) findViewById(R.id.user_list);
 
         ParseQuery<User> query = new ParseQuery<User>(User.class);
         query.findInBackground(new FindCallback<User>() {
@@ -32,13 +37,11 @@ public class UserListActivity extends ListActivity {
                     Toast.makeText(UserListActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
                 }
                 for (User u : list){
-                    User newUser = new User();
-                    newUser.setName(u.getName());
-                    users.add(newUser);
+                    users.add(u.getName());
                 }
 
-                ArrayAdapter<User> adapter = new ArrayAdapter<User>(UserListActivity.this, android.R.layout.simple_list_item_1, users);
-                setListAdapter(adapter);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(UserListActivity.this, android.R.layout.simple_list_item_1, users);
+                list.setAdapter(adapter);
             }
         });
 

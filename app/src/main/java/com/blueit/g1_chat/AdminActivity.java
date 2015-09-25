@@ -19,15 +19,14 @@ public class AdminActivity extends AppCompatActivity {
         findViewById(R.id.btn_add_user).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                user();
             }
         });
 
         findViewById(R.id.btn_add_news).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdminActivity.this, NewsflashActivity.class);
-                startActivity(intent);
+                newsflash();
             }
         });
     }
@@ -70,7 +69,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
    public void user(){
-        Intent intent = new Intent(AdminActivity.this, UserListActivity.class);
+        Intent intent = new Intent(AdminActivity.this, RegisterActivity.class);
         startActivity(intent);
     }
 

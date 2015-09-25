@@ -9,16 +9,15 @@ import com.parse.ParseUser;
  */
 @ParseClassName("User")
 public class User extends ParseObject {
-    String name;
 
     public String getName(){
         return getString("name");
     }
     public void setName(String name){
-        put("name", this.name);
+        put("name", name);
     }
     @Override
     public String toString(){
-        return getString("Name");
+        return getString("name");
     }
 }

@@ -25,12 +25,18 @@
             android:label="@string/title_activity_newsflash" >
         </activity>
         <activity
+
             android:name=".AdminActivity"
             android:label="@string/title_activity_admin" >
         </activity>
         <activity
             android:name=".UserListActivity"
             android:label="@string/title_activity_user_list" >
+        </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/activity_register">
+
         </activity>
     </application>
 

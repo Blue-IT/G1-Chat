@@ -11,4 +11,10 @@
         android:visible="true"
         android:orderInCategory="100"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/action_register"
+        android:title="@string/activity_register"
+        android:visible="true"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 </menu>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-
+import android.widget.RelativeLayout;
 
 
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ import com.parse.ParseUser;
 
 public class NewsflashActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private View rootView; //
     private EditText newsflashText;
-
     private ArrayList<String> TEMP_newsflashTable;
     private ArrayAdapter<String> TEMP_newsflashTableAdapter;
 
@@ -36,14 +37,38 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-         // Set view
+        // Set default layout
         setContentView(R.layout.activity_newsflash);
 
-         // Initialize text field
-        newsflashText = (EditText) findViewById(R.id.newsflash_text);
-        newsflashText.setInputType(InputType.TYPE_CLASS_TEXT
-                       | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        // Get logged in user
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
 
+            // Append admin view
+            if(currentUser.getBoolean("isAdmin")) {
+
+                // Get reference to our current layout
+                RelativeLayout layout = (RelativeLayout)findViewById(R.id.newsflash_layout);
+
+                // "Inflate" the admin view, attaching it as a child to our layout through the layout reference
+                // Then immediately set our content view to the returned combined view, so that other function calls do not need a reference.
+                setContentView(getLayoutInflater().inflate(R.layout.activity_newsflash_admin, layout, true));
+
+                // Initialize admin text field
+                newsflashText = (EditText) findViewById(R.id.newsflash_text);
+                newsflashText.setInputType(InputType.TYPE_CLASS_TEXT
+                               | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        
+                // Setup admin submit button
+                setClick(R.id.newsflash_submit);
+            }
+
+        }
+        else {
+            Log.e("G1CHAT", "No currentUser");
+        }
+
+        
         // Initialize placeholder database
         TEMP_newsflashTable = new ArrayList<String>();
         TEMP_newsflashTable.add("Lorem");
@@ -55,8 +80,6 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         ListView listView = (ListView) findViewById(R.id.newsflash_list);
         listView.setAdapter(TEMP_newsflashTableAdapter);
 
-        // Setup submit button
-        setClick(R.id.newsflash_submit);
     }
 
 
