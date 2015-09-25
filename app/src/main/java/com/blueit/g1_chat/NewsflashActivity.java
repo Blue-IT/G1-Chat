@@ -120,8 +120,11 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu
-        getMenuInflater().inflate(R.menu.menu_newsflash, menu);
+        if(ParseUser.getCurrentUser().getBoolean("isAdmin")) {
+            getMenuInflater().inflate(R.menu.menu_admin, menu);
+        }else{
+            getMenuInflater().inflate(R.menu.menu_newsflash, menu);
+        }
         return true;
     }
 

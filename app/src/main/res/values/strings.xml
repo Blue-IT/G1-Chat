@@ -17,4 +17,14 @@
     <string name="create_newsflash_submit">Submit</string>
     <string name="create_newsflash">Create Newsflash</string>
     <string name="err_create_newsflash">Newsflash was not created.</string>
+
+    <string name="title_activity_admin">Admin</string>
+    <string name="add_user">User</string>
+    <string name="add_news">News</string>
+    <string name="title_activity_user_list">Users</string>
+
+    <string name="register_title">Register</string>
+    <string name="register_button_submit">Add</string>
+    <string name="register_name">Name</string>
+    <string name="activity_register">Register</string>
 </resources>
