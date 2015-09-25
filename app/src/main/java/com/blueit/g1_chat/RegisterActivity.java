@@ -4,6 +4,7 @@ package com.blueit.g1_chat;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-public class RegisterActivity extends Activity{
+public class RegisterActivity extends AppCompatActivity {
 
     private EditText name;
     private EditText username;
