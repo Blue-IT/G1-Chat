@@ -91,6 +91,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
         // Query database and retrieve entries
         ParseQuery<Newsflash> query = ParseQuery.getQuery(Newsflash.class);
+        query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<Newsflash>() {
            public void done(List<Newsflash> objects, ParseException e) {
                if (e == null) {
@@ -169,7 +170,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                 query.getFirstInBackground(new GetCallback<Newsflash>() {
                     @Override
                     public void done(Newsflash parseObject, ParseException e) {
-                        newsflashArrayList.add(parseObject);
+                        newsflashArrayList.add(0, parseObject);
                         newsflashArrayAdapter.notifyDataSetChanged();
                     }
                 });
