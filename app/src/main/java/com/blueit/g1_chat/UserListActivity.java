@@ -20,16 +20,16 @@ import java.util.List;
 public class UserListActivity extends Activity {
 
     List<String> users = new ArrayList<String>();
-    ListView list;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
 
-        list = (ListView) findViewById(R.id.user_list);
+        listView = (ListView) findViewById(R.id.user_list);
 
-        ParseQuery<User> query = new ParseQuery<User>(User.class);
+        ParseQuery<User> query = new ParseQuery(User.class);
         query.findInBackground(new FindCallback<User>() {
             @Override
             public void done(List<User> list, ParseException e) {
@@ -41,7 +41,7 @@ public class UserListActivity extends Activity {
                 }
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(UserListActivity.this, android.R.layout.simple_list_item_1, users);
-                list.setAdapter(adapter);
+                listView.setAdapter(adapter);
             }
         });
 
