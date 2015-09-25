@@ -3,19 +3,21 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_padding">
+    android:padding="@dimen/activity_padding"
+    android:weightSum="1"
+    >
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/login_title"
-        android:id="@+id/textView3"
+        android:layout_marginTop="20dp"
+        android:id="@+id/imageView"
+        android:background="@drawable/logo"
         android:layout_gravity="center_horizontal" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:id="@+id/name_text"
         android:hint="@string/login_username" />
 
@@ -28,9 +30,13 @@
         android:hint="@string/login_password" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="22dp"
+        android:layout_marginTop="20dp"
         android:text="@string/login_button_submit"
         android:id="@+id/sign_in_button"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.11"
+        android:background="#e1e1e1" />
+
 </LinearLayout>
