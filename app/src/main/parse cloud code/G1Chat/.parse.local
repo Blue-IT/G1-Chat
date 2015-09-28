@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "G1Chat": {
+      "applicationId": "p3Pa3m5L8jl4KFR8Oal23cWHh2t9XgMljko2WnuE"
+    },
+    "_default": {
+      "link": "G1Chat"
+    }
+  }
+}
