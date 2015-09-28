@@ -39,7 +39,7 @@ public class LoginActivity extends Activity
                         Toast.makeText(LoginActivity.this, R.string.err_fields_empty, Toast.LENGTH_LONG)
                                 .show();
                         return;
-                };
+                }
 
                 // Set up a progress dialog
                 final ProgressDialog dlg = ProgressDialog.show(LoginActivity.this, null,
