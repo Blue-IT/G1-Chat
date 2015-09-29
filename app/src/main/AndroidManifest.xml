@@ -38,7 +38,11 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/activity_register">
+            android:label="@string/activity_register" >
+        </activity>
+        <activity
+            android:name=".ChatActivity"
+            android:label="@string/title_activity_chat" >
         </activity>
     </application>
 
