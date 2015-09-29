@@ -19,4 +19,6 @@
         android:text="Content"
         android:id="@+id/item_content"
         android:layout_gravity="center_horizontal" />
+
+
 </LinearLayout>
