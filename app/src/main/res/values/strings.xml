@@ -28,4 +28,6 @@
     <string name="register_name">Name</string>
     <string name="activity_register">Register</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="chat_text">Comment</string>
+    <string name="chat_button">Send</string>
 </resources>
