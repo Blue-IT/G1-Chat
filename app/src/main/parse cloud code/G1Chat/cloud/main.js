@@ -18,20 +18,6 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response) {
 	
     response.success();
 });
- 
-// Used to delete users
-Parse.Cloud.define("deleteUserWithId", function(request, response) {
-    Parse.Cloud.useMasterKey();
-    var userId = request.params.userId;
-    var query = new Parse.Query(Parse.User);
-    query.get(userId).then(function(user) {
-        return user.destroy();
-    }).then(function() {
-        response.success("User removed");
-    }, function(error) {
-        response.error("Failed to remove user");
-    });
-});
 
 // Used to delete users
 Parse.Cloud.define("deleteUserWithId", function(request, response) {
