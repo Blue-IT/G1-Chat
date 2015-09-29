@@ -11,6 +11,8 @@ import com.parse.ParseUser;
 
 public class AdminActivity extends AppCompatActivity {
 
+    MasterMenu menu = new MasterMenu(AdminActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
    public void user(){
-        Intent intent = new Intent(AdminActivity.this, RegisterActivity.class);
+        Intent intent = new Intent(AdminActivity.this, UserListActivity.class);
         startActivity(intent);
     }
 
