@@ -1,7 +1,32 @@
+/**
+ * References and guides:
+ * https://parse.com/apps/quickstart#parse_push/android/native/existing
+ * https://www.parse.com/docs/js/guide#push-notifications
+ * http://www.androidhive.info/2015/06/android-push-notifications-using-parse-com/
+ */
+
 // Called when a new chat message is received
-Parse.Cloud.afterSave("Chatroom", function(request, response) {
+Parse.Cloud.afterSave("Chatmessage", function(request, response) {
     console.log("A new message was received!");
-    response.success();
+	
+	Parse.Push.send({
+		// Attach chatroom id
+		channels: ["<Chatroom-Id>"],
+		data: {
+			// Attach message id
+			messageId: "<Chatmessage-Id>"
+		}
+	},
+	{
+		// Everything went smoothly
+		success: function() {
+			response.success();
+		},
+		// Something happened
+		error: function(e) {
+			response.error(e);
+		}
+	});
 });
  
 // Called when a new user is created
