@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseSession;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -44,17 +46,25 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Fill in all the fields", Toast.LENGTH_LONG).show();
                 }else{
-                   ParseUser user = new ParseUser();
+                    // Store current session so that it can be restored after signup
+                    final String adminSession = ParseUser.getCurrentUser().getSessionToken();
+
+                    // Create new user
+                    ParseUser user = new ParseUser();
                     user.put("name",Sname);
                     user.put("username",Susername);
                     user.put("password",Spassword);
+
+                    // Signup
                     user.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if(e == null){
+                            if (e == null) {
+                                ParseUser.becomeInBackground(adminSession); // Restore admin session
                                 Toast.makeText(getApplicationContext(),
                                         "Successfully Registered",
                                         Toast.LENGTH_LONG).show();
+                                finish();
                             } else {
                                 Toast.makeText(getApplicationContext(),
                                         "Register Error", Toast.LENGTH_LONG).show();
