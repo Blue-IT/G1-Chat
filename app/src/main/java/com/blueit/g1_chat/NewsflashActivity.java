@@ -138,6 +138,10 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
             logout();
             return true;
         }
+        else if (id == R.id.action_chat) {
+            chat();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -191,6 +195,10 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         startActivity(intent);
     }
 
+    public void chat() {
+        Intent intent = new Intent(NewsflashActivity.this, ChatActivity.class);
+        startActivity(intent);
+    }
     /**
      * Sets the click listener for a view with given id.
      *
