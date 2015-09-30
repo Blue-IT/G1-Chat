@@ -32,5 +32,4 @@
     <string name="title_activity_chat">ChatActivity</string>
     <string name="chat_text">Comment</string>
     <string name="chat_button">Send</string>
-    <string name="chat">Chat</string>
 </resources>
