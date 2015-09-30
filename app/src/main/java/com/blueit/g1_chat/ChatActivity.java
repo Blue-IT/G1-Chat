@@ -2,6 +2,7 @@ package com.blueit.g1_chat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +23,14 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
     String DEFAULT_CHANNEL = "default";
     int MESSAGE_HISTORY_LIMIT = 10;
+    int MESSAGE_REFRESH_MS = 1000;
     private EditText comment;
 
     String currentChannel;
@@ -35,22 +38,36 @@ public class ChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     ListView listView;
 
+    Date latestMessageDate;
+    boolean setupCompleted = false;
+
     MasterMenu menu = new MasterMenu(ChatActivity.this);
+
+    private boolean isRunning;
+    private static Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        Log.d("G1CHAT", "onCreate");
+
+        // Prepare handler
+        handler = new Handler();
+
+        Log.d("G1CHAT", "handler instantiated");;
+
         // View references
         listView = (ListView) findViewById(R.id.chat_list);
         comment = (EditText) findViewById(R.id.chatText);
         final String currentUser = ParseUser.getCurrentUser().getUsername();
+
         // Initiate chat
+        Log.d("G1CHAT", "onCreate calls switchChannel");
         switchChannel(DEFAULT_CHANNEL);
 
-        ParseObject.registerSubclass(ChatMessage.class);
-
+        // Setup send message click listener
         findViewById(R.id.chatButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,8 +93,25 @@ public class ChatActivity extends AppCompatActivity {
                 comment.setText("");
             }
         });
-
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        isRunning = true;
+        if(setupCompleted) {
+            loadNewMessages();
+        }
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        isRunning = false;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,6 +147,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
             public void switchChannel(String newChannel) {
+                Log.d("G1CHAT", "switchChannel");
                 // Set channel
                 currentChannel = newChannel;
 
@@ -124,14 +159,45 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
                 // Query database and retrieve messages
+                Log.d("G1CHAT", "switchChannel calls loadNewMessages");
+                loadNewMessages();
+            }
+
+            public void loadNewMessages() {
+                Log.d("G1CHAT", "loadNewMessages");
+                // Create query
+                Log.d("G1CHAT", "Creating query");
                 ParseQuery<ChatMessage> query = ParseQuery.getQuery(ChatMessage.class);
                 query.orderByAscending("createdAt");
                 query.whereEqualTo("channel", currentChannel);
                 query.setLimit(MESSAGE_HISTORY_LIMIT);
+                if(latestMessageDate != null) {
+                    Log.d("G1CHAT", "Query has createdAt property");
+                    query.whereGreaterThan("createdAt", latestMessageDate);
+                }
                 query.findInBackground(new FindCallback<ChatMessage>() {
                     public void done(List<ChatMessage> messages, ParseException e) {
-                        if (e == null) {
-                            // Insert all entries into our data list
+                        Log.d("G1CHAT", "FindCallback");
+                        if (e == null && !messages.isEmpty()) {
+                            Log.d("G1CHAT", "New messages!");
+
+                            // Prune duplicate messages
+                            for(ChatMessage existingMessage : chatMessages) {
+                                for(ChatMessage newMessage : messages) {
+                                    // If an existing message has the same object id as a new one, they are the same.
+                                    if(existingMessage.getObjectId().equals(newMessage.getObjectId())) {
+                                        // Remove the duplicate new message from the new data list
+                                        messages.remove(newMessage);
+
+                                        // End this loop - if we have found a new message equal to an existing message
+                                        // there should be no further duplicates of this existing message.
+                                        break;
+                                    }
+                                }
+                            }
+
+
+                            // Insert all remaining entries into our data list
                             chatMessages.addAll(messages);
 
                             // Configure the adapter which feeds data into the view
@@ -140,14 +206,38 @@ public class ChatActivity extends AppCompatActivity {
                             } else {
                                 chatAdapter = new ChatAdapter(ChatActivity.this,
                                         R.layout.chat_item, chatMessages);
-                                ListView listView = (ListView) findViewById(R.id.chat_list);
                                 listView.setAdapter(chatAdapter);
                             }
-                        } else {
+
+                            // Store latest date
+                            if (!chatMessages.isEmpty()) {
+                                Log.d("G1CHAT", "Storing latest date");
+                                ChatMessage lastMessage = chatMessages.get(chatMessages.size() - 1);
+                                latestMessageDate = lastMessage.getCreatedAt();
+                                Log.d("G1CHAT", "New latest date ");
+                            }
+
+                            if(!setupCompleted) {
+                                setupCompleted = true;
+                            }
+
+                        } else if(e != null) {
                             Log.e("G1CHAT", "Failed to retrieve chat objects from parse");
+                            Log.e("G1CHAT", "" + e.getCode());
                         }
+
+                        // Post next refresh
+                        Log.d("G1CHAT", "loadNewMessages posts next runnable");
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d("G1CHAT", "runnable fires");
+                                if (isRunning)
+                                    Log.d("G1CHAT", "runnable calls loadNewMessages");
+                                loadNewMessages();
+                            }
+                        }, MESSAGE_REFRESH_MS);
                     }
                 });
-
             }
         }

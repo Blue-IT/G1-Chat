@@ -3,6 +3,8 @@ package com.blueit.g1_chat.parseobjects;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
+import java.util.Date;
+
 @ParseClassName("ChatMessage")
 public class ChatMessage extends ParseObject {
 
@@ -26,4 +28,5 @@ public class ChatMessage extends ParseObject {
   public void setChannel(String value){
     put("channel", value);
   }
+
 }
