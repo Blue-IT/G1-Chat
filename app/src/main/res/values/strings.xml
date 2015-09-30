@@ -5,6 +5,7 @@
     <string name="login_password">Password</string>
     <string name="login_button_submit">Login</string>
     <string name="logout">Logout</string>
+    <string name="chat">Chat</string>
     <string name="alert_wait">Please wait...</string>
     <string name="err_fields_empty">Please fill in all the fields.</string>
     <string name="err_login">The username or password is incorrect.</string>
@@ -21,6 +22,7 @@
     <string name="title_activity_admin">Admin</string>
     <string name="add_user">User</string>
     <string name="add_news">News</string>
+    <string name="reg_user">Register user</string>
     <string name="title_activity_user_list">Users</string>
 
     <string name="register_title">Register</string>

@@ -1,7 +1,6 @@
 package com.blueit.g1_chat;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -78,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_admin, menu);
+        //getMenuInflater().inflate(R.menu.menu_admin_newsflash, menu);
         return true;
     }
 
