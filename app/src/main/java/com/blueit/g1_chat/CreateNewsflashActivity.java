@@ -21,6 +21,8 @@ public class CreateNewsflashActivity extends AppCompatActivity implements View.O
     private EditText inputTitle;
     private EditText inputContent;
 
+    MasterMenu menu = new MasterMenu(CreateNewsflashActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +32,12 @@ public class CreateNewsflashActivity extends AppCompatActivity implements View.O
         inputContent =  (EditText) findViewById(R.id.create_newsflash_content);
         inputContent.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         setClick(R.id.create_newsflash_submit);
-
-
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create_newsflash, menu);
+        getMenuInflater().inflate(R.menu.menu_admin, menu);
         return true;
     }
 
@@ -51,8 +49,16 @@ public class CreateNewsflashActivity extends AppCompatActivity implements View.O
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if(id == R.id.action_logout) {
+            menu.logout();
+        }else if(id == R.id.action_news){
+            menu.newsflash();
+        }else if(id == R.id.action_user){
+            menu.user();
+        }else if(id == R.id.action_chat){
+            menu.chat();
+        }else if(id == R.id.action_admin){
+            menu.admin();
         }
 
         return super.onOptionsItemSelected(item);

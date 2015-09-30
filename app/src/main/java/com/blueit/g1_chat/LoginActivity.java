@@ -53,12 +53,13 @@ public class LoginActivity extends Activity
                         if (e != null) {
                             // Show the error message
                             Toast.makeText(LoginActivity.this, R.string.err_login, Toast.LENGTH_LONG).show();
-                        }else if(ParseUser.getCurrentUser().getBoolean("isAdmin")){
-                            Toast.makeText(LoginActivity.this, "Welcome master Michel", Toast.LENGTH_LONG).show();
+                        }
+                        else if(ParseUser.getCurrentUser().getBoolean("isAdmin")){
                             Intent adminIntent = new Intent(LoginActivity.this, AdminActivity.class);
                             adminIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(adminIntent);
-                        }else {
+                        }
+                        else {
                             // Start an intent for the dispatch activity
                             Intent newsIntent = new Intent(LoginActivity.this, NewsflashActivity.class);
                             newsIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -6,24 +6,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.blueit.g1_chat.adapters.NewsflashAdapter;
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -37,6 +38,9 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
     private ArrayList<Newsflash> newsflashArrayList;
     private ArrayAdapter<Newsflash> newsflashArrayAdapter;
+    ParseUser currentUser = ParseUser.getCurrentUser();
+
+    MasterMenu menu = new MasterMenu(NewsflashActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +49,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         // Set default layout
         setContentView(R.layout.activity_newsflash);
 
-        // Get logged in user
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        // Construct view
         if (currentUser != null) {
 
             // Append admin view
@@ -79,6 +82,8 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
                 // Setup admin create newsflash button
                 setClick(R.id.newsflash_submit);
+
+
             }
 
         }
@@ -104,6 +109,9 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                    ListView listView = (ListView) findViewById(R.id.newsflash_list);
                    listView.setAdapter(newsflashArrayAdapter);
 
+                   if(currentUser.getBoolean("isAdmin")) {
+                       deleteNews(newsflashArrayList);
+                   }
                } else {
                    Log.e("G1CHAT", "Failed to retrieve newsflash objects from parse");
                }
@@ -117,12 +125,43 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         ParseObject.registerSubclass(Newsflash.class);
     }
 
+    //Delete news with a longclick
+    public void deleteNews(final ArrayList<Newsflash> data){
+        ListView list = (ListView)findViewById(R.id.newsflash_list);
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
+                                           int position, long id) {
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Newsflash");
+                query.getInBackground(data.get(position).getObjectId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject currentNews, ParseException e) {
+                        if (e == null) {
+                            currentNews.deleteInBackground();
+                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("Error", e.getMessage());
+                            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                newsflashArrayList.remove(position);//arg2 is position of the clicked item
+                newsflashArrayAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(ParseUser.getCurrentUser().getBoolean("isAdmin")) {
             getMenuInflater().inflate(R.menu.menu_admin, menu);
+            MenuItem item = menu.findItem(R.id.action_news);
+            item.setVisible(false);
+            invalidateOptionsMenu();
         }else{
-            getMenuInflater().inflate(R.menu.menu_newsflash, menu);
+            getMenuInflater().inflate(R.menu.menu_user, menu);
+            MenuItem item = menu.findItem(R.id.action_news);
+            item.setVisible(false);
+            invalidateOptionsMenu();
         }
         return true;
     }
@@ -130,17 +169,17 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Log.d("G1CHAT", "Settings button pressed");
-            return true;
-        }
-        else if (id == R.id.action_logout) {
-            logout();
-            return true;
-        }
-        else if (id == R.id.action_chat) {
-            chat();
-            return true;
+
+        if(id == R.id.action_logout) {
+            menu.logout();
+        }else if(id == R.id.action_news){
+            menu.newsflash();
+        }else if(id == R.id.action_user){
+            menu.user();
+        }else if(id == R.id.action_chat){
+            menu.chat();
+        }else if(id == R.id.action_admin){
+            menu.admin();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -189,16 +228,6 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void logout() {
-        ParseUser.getCurrentUser().logOut();
-        Intent intent = new Intent(NewsflashActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    public void chat() {
-        Intent intent = new Intent(NewsflashActivity.this, ChatActivity.class);
-        startActivity(intent);
-    }
     /**
      * Sets the click listener for a view with given id.
      *
