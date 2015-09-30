@@ -23,6 +23,8 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
 
+    MasterMenu menu = new MasterMenu(RegisterActivity.this);
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
@@ -75,9 +77,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_admin_newsflash, menu);
+        getMenuInflater().inflate(R.menu.menu_admin, menu);
         return true;
     }
 
@@ -87,14 +90,16 @@ public class RegisterActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if(id == R.id.action_logout) {
-            logout();
+        if(id == R.id.action_logout) {
+            menu.logout();
         }else if(id == R.id.action_news){
-            newsflash();
+            menu.newsflash();
         }else if(id == R.id.action_user){
-            user();
+            menu.user();
+        }else if(id == R.id.action_chat){
+            menu.chat();
+        }else if(id == R.id.action_admin){
+            menu.admin();
         }
 
         return super.onOptionsItemSelected(item);

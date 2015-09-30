@@ -28,6 +28,8 @@ public class ChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     ListView listView;
 
+    MasterMenu menu = new MasterMenu(ChatActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +45,10 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_chat, menu);
+        getMenuInflater().inflate(R.menu.menu_user, menu);
+        MenuItem item = menu.findItem(R.id.action_chat);
+        item.setVisible(false);
+        invalidateOptionsMenu();
         return true;
     }
 
@@ -55,8 +60,16 @@ public class ChatActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if(id == R.id.action_logout) {
+            menu.logout();
+        }else if(id == R.id.action_news){
+            menu.newsflash();
+        }else if(id == R.id.action_user){
+            menu.user();
+        }else if(id == R.id.action_chat){
+            menu.chat();
+        }else if(id == R.id.action_admin){
+            menu.admin();
         }
 
         return super.onOptionsItemSelected(item);

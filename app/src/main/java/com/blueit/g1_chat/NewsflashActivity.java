@@ -40,6 +40,8 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
     private ArrayAdapter<Newsflash> newsflashArrayAdapter;
     ParseUser currentUser = ParseUser.getCurrentUser();
 
+    MasterMenu menu = new MasterMenu(NewsflashActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +49,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         // Set default layout
         setContentView(R.layout.activity_newsflash);
 
-
-        // Get logged in user
-        //ParseUser currentUser = ParseUser.getCurrentUser();
+        // Construct view
         if (currentUser != null) {
 
             // Append admin view
@@ -170,14 +170,16 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            Log.d("G1CHAT", "Settings button pressed");
-            return true;
-        }
-        else if(id == R.id.action_logout) {
-            logout();
+        if(id == R.id.action_logout) {
+            menu.logout();
+        }else if(id == R.id.action_news){
+            menu.newsflash();
         }else if(id == R.id.action_user){
-            user();
+            menu.user();
+        }else if(id == R.id.action_chat){
+            menu.chat();
+        }else if(id == R.id.action_admin){
+            menu.admin();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -224,17 +226,6 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                         .show();
             }
         }
-    }
-
-    public void logout() {
-        ParseUser.getCurrentUser().logOut();
-        Intent intent = new Intent(NewsflashActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    public void user(){
-        Intent intent = new Intent(NewsflashActivity.this, UserListActivity.class);
-        startActivity(intent);
     }
 
     /**

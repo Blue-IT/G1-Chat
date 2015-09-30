@@ -30,6 +30,8 @@ public class UserListActivity extends AppCompatActivity{
     String user = ParseUser.getCurrentUser().getUsername();
     ArrayAdapter<ParseUser> adapter;
 
+    MasterMenu menu = new MasterMenu(UserListActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class UserListActivity extends AppCompatActivity{
         findViewById(R.id.btn_reg_user).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reguser();
+                menu.reguser();
             }
         });
 
@@ -109,27 +111,18 @@ public class UserListActivity extends AppCompatActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }else if(id == R.id.action_logout) {
-            logout();
+        if(id == R.id.action_logout) {
+            menu.logout();
         }else if(id == R.id.action_news){
-            newsflash();
+            menu.newsflash();
+        }else if(id == R.id.action_user){
+            menu.user();
+        }else if(id == R.id.action_chat){
+            menu.chat();
+        }else if(id == R.id.action_admin){
+            menu.admin();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    public void logout() {
-        ParseUser.getCurrentUser().logOut();
-        Intent intent = new Intent(UserListActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-    public void reguser(){
-        Intent intent = new Intent(UserListActivity.this, RegisterActivity.class);
-        startActivity(intent);
-    }
-    public void newsflash(){
-        Intent intent = new Intent(UserListActivity.this, NewsflashActivity.class);
-        startActivity(intent);
     }
 }

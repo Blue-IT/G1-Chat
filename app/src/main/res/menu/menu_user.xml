@@ -4,7 +4,7 @@
     tools:context="com.blueit.g1_chat.NewsflashActivity">
 
     <item android:id="@+id/action_news"
-        android:title="@string/logout"
+        android:title="@string/title_activity_newsflash"
         android:visible="true"
         android:orderInCategory="100"
         app:showAsAction="never"/>
