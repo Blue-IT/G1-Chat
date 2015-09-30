@@ -104,19 +104,4 @@ public class RegisterActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void logout() {
-        ParseUser.getCurrentUser().logOut();
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    public void newsflash(){
-        Intent intent = new Intent(RegisterActivity.this, NewsflashActivity.class);
-        startActivity(intent);
-    }
-
-    public void user(){
-        Intent intent = new Intent(RegisterActivity.this, RegisterActivity.class);
-        startActivity(intent);
-    }
 }
