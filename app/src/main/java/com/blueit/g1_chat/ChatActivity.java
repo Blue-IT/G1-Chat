@@ -66,10 +66,14 @@ public class ChatActivity extends AppCompatActivity {
                     public void done(ParseException e) {
                         if (e != null) {
                             Toast.makeText(getApplicationContext(),
-                                    "Register Error", Toast.LENGTH_LONG).show();
+                                    "Chat Error", Toast.LENGTH_LONG).show();
                         }
+                        chatMessages.add(entry);
+                        chatAdapter.notifyDataSetChanged();
                     }
                 });
+
+                comment.setText("");
             }
         });
 
