@@ -21,26 +21,29 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response) {
 });
 
 // Called when a new chat message is received
-Parse.Cloud.afterSave("ChatMessage", function(request, response) {
-    console.log("A new message was received!");
-	response.succes();
-	return;
+Parse.Cloud.afterSave("ChatMessage", function(request) {
+	var message = request.object;
+	var author = message.get("author");
+	var content = message.get("content");
+	var channel = message.get("channel");
+	
+    console.log("Message received from [" + author + "]: '" + content + "'");
+	
 	Parse.Push.send({
 		// Attach chatroom id
-		channels: ["<Chatroom-Id>"],
+		channels: [channel],
 		data: {
 			// Attach message id
-			messageId: "<Chatmessage-Id>"
+			messageId: message.id
 		}
 	},
 	{
-		// Everything went smoothly
 		success: function() {
-			response.success();
+			console.log("Message sent to channel: '" + channel + "'");
 		},
 		// Something happened
 		error: function(e) {
-			response.error(e);
+			console.error(e);
 		}
 	});
 });
