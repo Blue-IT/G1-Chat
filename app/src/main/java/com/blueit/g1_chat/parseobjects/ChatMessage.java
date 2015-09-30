@@ -20,5 +20,11 @@ public class ChatMessage extends ParseObject {
     put("content", value);
   }
 
+  public String getChannel(){
+    return getString("channel");
+  }
 
+  public void setChannel(String value){
+    put("channel", value);
+  }
 }
