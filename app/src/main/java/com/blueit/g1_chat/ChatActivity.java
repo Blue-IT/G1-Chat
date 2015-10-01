@@ -6,8 +6,11 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.view.View;
@@ -93,6 +96,8 @@ public class ChatActivity extends AppCompatActivity {
                 comment.setText("");
             }
         });
+
+        registerForContextMenu(listView);
     }
 
     @Override
@@ -112,6 +117,30 @@ public class ChatActivity extends AppCompatActivity {
         isRunning = false;
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.chat_list) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_chat_list_item, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch(item.getItemId()) {
+                return true;
+            case R.id.edit:
+                // edit stuff here
+                return true;
+            case R.id.delete:
+                // remove stuff here
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
