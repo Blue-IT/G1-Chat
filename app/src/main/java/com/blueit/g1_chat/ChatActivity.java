@@ -98,9 +98,23 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         registerForContextMenu(listView);
-    }
 
-    @Override
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
+                String author = chatMessages.get(position).getAuthor();
+                if (author.equals(ParseUser.getCurrentUser().getUsername())) {
+                    listView.showContextMenu();
+                }
+                return true;
+
+            }
+        });
+
+        }
+
+        @Override
     protected void onResume()
     {
         super.onResume();
