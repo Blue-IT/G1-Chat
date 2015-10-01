@@ -130,7 +130,6 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch(item.getItemId()) {
-                return true;
             case R.id.edit:
                 // edit stuff here
                 return true;
@@ -141,6 +140,9 @@ public class ChatActivity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
