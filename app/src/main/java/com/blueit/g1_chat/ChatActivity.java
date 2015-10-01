@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.blueit.g1_chat.adapters.ChatAdapter;
 import com.blueit.g1_chat.parseobjects.ChatMessage;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -97,20 +98,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        registerForContextMenu(listView);
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View v, int position, long id) {
-                String author = chatMessages.get(position).getAuthor();
-                if (author.equals(ParseUser.getCurrentUser().getUsername())) {
-                    listView.showContextMenu();
-                }
-                return true;
-
-            }
-        });
+       registerForContextMenu(listView);
 
         }
 
@@ -134,21 +122,43 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId()==R.id.chat_list) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.menu_chat_list_item, menu);
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+        String author = chatMessages.get(info.position).getAuthor();
+        if (author.equals(ParseUser.getCurrentUser().getUsername())) {
+
+            if (v.getId() == R.id.chat_list) {
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.menu_chat_list_item, menu);
+            }
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = info.position;
         switch(item.getItemId()) {
             case R.id.edit:
+
                 // edit stuff here
+
                 return true;
             case R.id.delete:
-                // remove stuff here
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ChatMessage");
+                query.getInBackground(chatMessages.get(position).getObjectId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject currentMessage, ParseException e) {
+                        if (e == null) {
+                            currentMessage.deleteInBackground();
+                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("Error", e.getMessage());
+                            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                chatMessages.remove(position);
+                chatAdapter.notifyDataSetChanged();
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -227,10 +237,10 @@ public class ChatActivity extends AppCompatActivity {
                             Log.d("G1CHAT", "New messages!");
 
                             // Prune duplicate messages
-                            for(ChatMessage existingMessage : chatMessages) {
-                                for(ChatMessage newMessage : messages) {
+                            for (ChatMessage existingMessage : chatMessages) {
+                                for (ChatMessage newMessage : messages) {
                                     // If an existing message has the same object id as a new one, they are the same.
-                                    if(existingMessage.getObjectId().equals(newMessage.getObjectId())) {
+                                    if (existingMessage.getObjectId().equals(newMessage.getObjectId())) {
                                         // Remove the duplicate new message from the new data list
                                         messages.remove(newMessage);
 
@@ -262,11 +272,11 @@ public class ChatActivity extends AppCompatActivity {
                                 Log.d("G1CHAT", "New latest date ");
                             }
 
-                            if(!setupCompleted) {
+                            if (!setupCompleted) {
                                 setupCompleted = true;
                             }
 
-                        } else if(e != null) {
+                        } else if (e != null) {
                             Log.e("G1CHAT", "Failed to retrieve chat objects from parse");
                             Log.e("G1CHAT", "" + e.getCode());
                         }
@@ -285,4 +295,5 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
             }
+
         }
