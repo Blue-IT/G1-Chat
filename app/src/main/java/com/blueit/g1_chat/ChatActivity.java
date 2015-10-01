@@ -75,19 +75,37 @@ public class ChatActivity extends AppCompatActivity {
         findViewById(R.id.chatButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Retrieve input
                 String Scomment = comment.getText().toString();
 
+                // Process input
+                Scomment = Scomment.trim(); // Trim leading/trailing whitespace.admin
+
+                // Verify content
+                if (Scomment.equals("")) {
+                    Toast.makeText(ChatActivity.this, R.string.err_fields_empty, Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }else if (Scomment.contains("<") || Scomment.contains(">")){
+                    Toast.makeText(ChatActivity.this, R.string.err_fields_illegal, Toast.LENGTH_LONG)
+                            .show();
+                    return;
+                }
+
+                // Create chat message
                 final ChatMessage entry = new ChatMessage();
                 entry.setContent(Scomment);
                 entry.setAuthor(currentUser);
                 entry.setChannel(currentChannel);
 
+                // Send
                 entry.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if (e != null) {
                             Toast.makeText(getApplicationContext(),
-                                    "Chat Error", Toast.LENGTH_LONG).show();
+                                    R.string.err_chat_send, Toast.LENGTH_LONG).show();
                         }
                         chatMessages.add(entry);
                         chatAdapter.notifyDataSetChanged();
@@ -279,6 +297,8 @@ public class ChatActivity extends AppCompatActivity {
                         } else if (e != null) {
                             Log.e("G1CHAT", "Failed to retrieve chat objects from parse");
                             Log.e("G1CHAT", "" + e.getCode());
+                            Toast.makeText(getApplicationContext(),
+                                    R.string.err_chat_refresh, Toast.LENGTH_LONG).show();
                         }
 
                         // Post next refresh
