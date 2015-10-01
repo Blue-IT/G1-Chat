@@ -143,6 +143,7 @@ public class ChatActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
         String author = chatMessages.get(info.position).getAuthor();
+        //Context menu pops up only for the cuurent user.
         if (author.equals(ParseUser.getCurrentUser().getUsername())) {
 
             if (v.getId() == R.id.chat_list) {
@@ -163,11 +164,14 @@ public class ChatActivity extends AppCompatActivity {
 
                 return true;
             case R.id.delete:
+                //Delete with notification
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("ChatMessage");
                 query.getInBackground(chatMessages.get(position).getObjectId(), new GetCallback<ParseObject>() {
                     public void done(ParseObject currentMessage, ParseException e) {
                         if (e == null) {
-                            currentMessage.deleteInBackground();
+                            currentMessage.put("content", "Deleted by " + currentMessage.getString("author"));
+                            currentMessage.put("author", "");
+                            currentMessage.saveInBackground();
                             Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e("Error", e.getMessage());
@@ -175,7 +179,9 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                 });
-                chatMessages.remove(position);
+                String updatedMessage = "Deleted by " + chatMessages.get(position).getAuthor();
+                chatMessages.get(position).setContent(updatedMessage);
+                chatMessages.get(position).setAuthor("");
                 chatAdapter.notifyDataSetChanged();
                 return true;
             default:
