@@ -2,7 +2,9 @@ package com.blueit.g1_chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.support.v7.app.AppCompatActivity;
@@ -17,14 +19,11 @@ import android.widget.Toast;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.blueit.g1_chat.adapters.NewsflashAdapter;
 import com.parse.FindCallback;
-import com.parse.FunctionCallback;
 import com.parse.GetCallback;
-import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -35,10 +34,14 @@ import com.blueit.g1_chat.parseobjects.Newsflash;
 public class NewsflashActivity extends AppCompatActivity implements View.OnClickListener {
 
     static final int CREATE_NEWSFLASH_REQUEST = 1;  // The request code
+    static final int EDIT_MESSAGE_REQUEST = 2;
 
     private ArrayList<Newsflash> newsflashArrayList;
     private ArrayAdapter<Newsflash> newsflashArrayAdapter;
     ParseUser currentUser = ParseUser.getCurrentUser();
+
+    int position;
+    String newComment;
 
     MasterMenu menu = new MasterMenu(NewsflashActivity.this);
 
@@ -112,7 +115,8 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                    listView.setAdapter(newsflashArrayAdapter);
 
                    if(currentUser.getBoolean("isAdmin")) {
-                       deleteNews(newsflashArrayList);
+                       registerForContextMenu(listView);
+                       //deleteNews(newsflashArrayList);
                    }
                } else {
                    Log.e("G1CHAT", "Failed to retrieve newsflash objects from parse");
@@ -127,31 +131,90 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         ParseObject.registerSubclass(Newsflash.class);
     }
 
-    //Delete news with a longclick
-    public void deleteNews(final ArrayList<Newsflash> data){
-        ListView list = (ListView)findViewById(R.id.newsflash_list);
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
-                                           int position, long id) {
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info =
+                (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+
+            if (v.getId() == R.id.newsflash_list) {
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.menu_list_item, menu);
+            }
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        position = info.position;
+        switch(item.getItemId()) {
+            case R.id.edit:
+                //Edit message
+                Intent intent = new Intent(NewsflashActivity.this, EditMessageActivity.class);
+                intent.putExtra("content", newsflashArrayList.get(position).getString("content").toString());
+                startActivityForResult(intent, EDIT_MESSAGE_REQUEST);
+                return true;
+            case R.id.delete:
+                //Delete with notification
+                newsflashArrayList.get(position).deleteInBackground();
+                newsflashArrayList.remove(position);
+                newsflashArrayAdapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Request
+        if (requestCode == CREATE_NEWSFLASH_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                String id = data.getStringExtra("id");
+
+                ParseQuery<Newsflash> query = ParseQuery.getQuery(Newsflash.class);
+                query.whereEqualTo("objectId", id);
+                query.getFirstInBackground(new GetCallback<Newsflash>() {
+                    @Override
+                    public void done(Newsflash parseObject, ParseException e) {
+                        newsflashArrayList.add(0, parseObject);
+                        newsflashArrayAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+            // Could not create newsflash
+            else {
+                Toast.makeText(NewsflashActivity.this, R.string.err_create_newsflash, Toast.LENGTH_LONG)
+                        .show();
+            }
+        }else if(requestCode == EDIT_MESSAGE_REQUEST){
+            if (resultCode == RESULT_OK){
+
+                newComment = data.getStringExtra("comment");
+
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Newsflash");
-                query.getInBackground(data.get(position).getObjectId(), new GetCallback<ParseObject>() {
-                    public void done(ParseObject currentNews, ParseException e) {
+                query.getInBackground(newsflashArrayList.get(position).getObjectId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject currentMessage, ParseException e) {
                         if (e == null) {
-                            currentNews.deleteInBackground();
-                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e("Error", e.getMessage());
-                            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
+                            currentMessage.put("content",newComment);
+                            currentMessage.saveInBackground();
+                            Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-                newsflashArrayList.remove(position);//arg2 is position of the clicked item
-                newsflashArrayAdapter.notifyDataSetChanged();
-                return false;
+
             }
-        });
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
+        }
+        newsflashArrayList.get(position).setContent(newComment);
+        newsflashArrayAdapter.notifyDataSetChanged();
     }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(ParseUser.getCurrentUser().getBoolean("isAdmin")) {
@@ -204,31 +267,8 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         startActivityForResult(intent, CREATE_NEWSFLASH_REQUEST);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Request
-        if (requestCode == CREATE_NEWSFLASH_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                String id = data.getStringExtra("id");
 
-                ParseQuery<Newsflash> query = ParseQuery.getQuery(Newsflash.class);
-                query.whereEqualTo("objectId", id);
-                query.getFirstInBackground(new GetCallback<Newsflash>() {
-                    @Override
-                    public void done(Newsflash parseObject, ParseException e) {
-                        newsflashArrayList.add(0, parseObject);
-                        newsflashArrayAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-            // Could not create newsflash
-            else {
-                Toast.makeText(NewsflashActivity.this, R.string.err_create_newsflash, Toast.LENGTH_LONG)
-                        .show();
-            }
-        }
-    }
+
 
     /**
      * Sets the click listener for a view with given id.

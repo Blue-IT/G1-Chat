@@ -67,7 +67,7 @@ public class ChatActivity extends AppCompatActivity {
         // View references
         listView = (ListView) findViewById(R.id.chat_list);
         comment = (EditText) findViewById(R.id.chatText);
-        final String currentUser = ParseUser.getCurrentUser().getUsername();
+        final String currentUser = ParseUser.getCurrentUser().getString("name");
 
         // Initiate chat
         Log.d("G1CHAT", "onCreate about to call switchChannel");
@@ -156,11 +156,11 @@ public class ChatActivity extends AppCompatActivity {
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
         String author = chatMessages.get(info.position).getAuthor();
         //Context menu pops up only for the current user.
-        if (author.equals(ParseUser.getCurrentUser().getUsername())) {
+        if (author.equals(ParseUser.getCurrentUser().getString("name"))) {
 
             if (v.getId() == R.id.chat_list) {
                 MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.menu_chat_list_item, menu);
+                inflater.inflate(R.menu.menu_list_item, menu);
             }
         }
     }
@@ -171,7 +171,6 @@ public class ChatActivity extends AppCompatActivity {
         position = info.position;
         switch(item.getItemId()) {
             case R.id.edit:
-
                 //Edit message
                 Intent intent = new Intent(ChatActivity.this, EditMessageActivity.class);
                 intent.putExtra("content", chatMessages.get(position).getString("content").toString());
@@ -342,9 +341,6 @@ public class ChatActivity extends AppCompatActivity {
                 });
 
             }
-
-
-
         }
         chatMessages.get(position).setContent(newComment);
         chatAdapter.notifyDataSetChanged();
