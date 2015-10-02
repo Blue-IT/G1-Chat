@@ -167,23 +167,10 @@ public class ChatActivity extends AppCompatActivity {
                 return true;
             case R.id.delete:
                 //Delete with notification
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("ChatMessage");
-                query.getInBackground(chatMessages.get(position).getObjectId(), new GetCallback<ParseObject>() {
-                    public void done(ParseObject currentMessage, ParseException e) {
-                        if (e == null) {
-                            currentMessage.put("content", "Deleted by " + currentMessage.getString("author"));
-                            currentMessage.put("author", "");
-                            currentMessage.saveInBackground();
-                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e("Error", e.getMessage());
-                            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
                 String updatedMessage = "Deleted by " + chatMessages.get(position).getAuthor();
                 chatMessages.get(position).setContent(updatedMessage);
                 chatMessages.get(position).setAuthor("");
+                chatMessages.get(position).saveInBackground();
                 chatAdapter.notifyDataSetChanged();
                 return true;
             default:
