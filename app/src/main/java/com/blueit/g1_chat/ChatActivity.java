@@ -161,7 +161,6 @@ public class ChatActivity extends AppCompatActivity {
         position = info.position;
         switch(item.getItemId()) {
             case R.id.edit:
-
                 //Edit message
                 Intent intent = new Intent(ChatActivity.this, EditMessageActivity.class);
                 intent.putExtra("content", chatMessages.get(position).getString("content").toString());
@@ -331,9 +330,6 @@ public class ChatActivity extends AppCompatActivity {
                 });
 
             }
-
-
-
         }
         chatMessages.get(position).setContent(newComment);
         chatAdapter.notifyDataSetChanged();
