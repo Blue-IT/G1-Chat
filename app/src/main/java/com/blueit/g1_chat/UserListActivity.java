@@ -48,19 +48,46 @@ public class UserListActivity extends AppCompatActivity{
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> userList, ParseException e) {
-                if (e != null){
+                if (e != null) {
                     Toast.makeText(UserListActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
+                } else {
+                    users.addAll(userList);
+                    populateListView(users);
+                    registerClickCallback(users);
                 }
-                users.addAll(userList);
-                populateListView(users);
-                registerClickCallback(users);
-
             }
         });
 
+    }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        updateUserList();
+    }
 
+    public void updateUserList() {
+        // Verify state
+        if(users == null || adapter == null) {
+            Log.w("G1CHAT", "updateUserList called before users or adapter was initiated");
+            return;
+        }
 
+        // Query
+        ParseQuery<ParseUser> query = ParseUser.getQuery().whereNotEqualTo("username", user);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> userList, ParseException e) {
+                if (e != null){
+                    Toast.makeText(UserListActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
+                } else {
+                    users.clear();
+                    users.addAll(userList);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     public void populateListView(List<ParseUser> data){

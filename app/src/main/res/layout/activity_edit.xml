@@ -10,7 +10,6 @@ android:orientation="horizontal" >
         android:text="Edit your message"
         android:id="@+id/textView"
         android:textSize="18dp"
-        android:layout_above="@+id/edit_message"
         android:layout_centerHorizontal="true"
         android:textStyle="bold" />
 
