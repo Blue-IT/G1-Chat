@@ -4,26 +4,30 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="horizontal" >
     <TextView
+        style="@style/MyTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:text="Edit your message"
         android:id="@+id/textView"
         android:textSize="18dp"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_above="@+id/edit_message"
+        android:layout_centerHorizontal="true"/>
 
 <EditText
+    style="@style/MyEditTextStyle"
     android:id="@+id/edit_message"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:hint="@string/edit_message" />
 <Button
+    style="@style/MyButton"
     android:id="@+id/send_button"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentRight="true"
-    android:layout_centerInParent="true"
-    android:text="@string/chat_button" />
+    android:layout_height="30dip"
+    android:text="@string/title_activity_edit"
+    android:layout_marginTop="35dp"
+    android:layout_below="@+id/edit_message"
+    android:layout_centerHorizontal="true"/>
 </RelativeLayout>
