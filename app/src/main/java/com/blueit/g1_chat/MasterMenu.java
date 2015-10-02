@@ -1,9 +1,7 @@
 package com.blueit.g1_chat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 
 import com.parse.ParseUser;
 
@@ -41,7 +39,7 @@ public class MasterMenu {
     }
 
     public void chat(){
-        Intent intent = new Intent(context, SelectChatRoomActivity.class);
+        Intent intent = new Intent(context, ChannelListActivity.class);
         context.startActivity(intent);
     }
 

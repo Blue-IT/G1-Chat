@@ -1,10 +1,7 @@
 package com.blueit.g1_chat;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +9,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.blueit.g1_chat.parseobjects.Newsflash;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -21,12 +17,12 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
-public class CreateNewChannelActivity extends AppCompatActivity implements View.OnClickListener{
+public class CreateChannelActivity extends AppCompatActivity implements View.OnClickListener{
 
 
     private EditText inputTitle;
 
-    MasterMenu menu = new MasterMenu(CreateNewChannelActivity.this);
+    MasterMenu menu = new MasterMenu(CreateChannelActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +83,7 @@ public class CreateNewChannelActivity extends AppCompatActivity implements View.
 
         // Verify
         if (title.equals("")) {
-            Toast.makeText(CreateNewChannelActivity.this, R.string.err_fields_empty, Toast.LENGTH_LONG)
+            Toast.makeText(CreateChannelActivity.this, R.string.err_fields_empty, Toast.LENGTH_LONG)
                     .show();
             return;
         }
@@ -98,7 +94,7 @@ public class CreateNewChannelActivity extends AppCompatActivity implements View.
             @Override
             public void done(List<ParseObject> channelList, ParseException e) {
                 if (e != null) {
-                    Toast.makeText(CreateNewChannelActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateChannelActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("G1CHAT", "Verification Channel List callback");
                     Log.d("G1CHAT", "there are " + channelList.size() + " results");
@@ -106,7 +102,7 @@ public class CreateNewChannelActivity extends AppCompatActivity implements View.
                         String channel = channelObject.getString("name");
                         Log.d("G1CHAT", "checking channel " + channel);
                         if (channel.equals(title)) {
-                            Toast.makeText(CreateNewChannelActivity.this, R.string.err_fields_illegal, Toast.LENGTH_LONG)
+                            Toast.makeText(CreateChannelActivity.this, R.string.err_fields_illegal, Toast.LENGTH_LONG)
                                     .show();
                             return;
                         }

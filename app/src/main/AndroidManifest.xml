@@ -50,12 +50,12 @@
             android:label="@string/title_activity_edit" >
         </activity>
         <activity
-            android:name=".SelectChatRoomActivity"
+            android:name=".ChannelListActivity"
             android:label="@string/title_activity_chat"
             android:launchMode="singleTop">
         </activity>
         <activity
-            android:name=".CreateNewChannelActivity"
+            android:name=".CreateChannelActivity"
             android:label="@string/title_activity_chat">
         </activity>
 

@@ -13,25 +13,21 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.blueit.g1_chat.adapters.ChannelAdapter;
-import com.blueit.g1_chat.adapters.UserListAdapter;
 import com.parse.FindCallback;
-import com.parse.FunctionCallback;
-import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class SelectChatRoomActivity extends AppCompatActivity{
+public class ChannelListActivity extends AppCompatActivity{
 
     ParseUser currentUser = ParseUser.getCurrentUser();
     ArrayAdapter<String> adapter;
     List<String> channels = new ArrayList<String>();
-    MasterMenu menu = new MasterMenu(SelectChatRoomActivity.this);
+    MasterMenu menu = new MasterMenu(ChannelListActivity.this);
 
     ListView lv;
 
@@ -42,7 +38,7 @@ public class SelectChatRoomActivity extends AppCompatActivity{
 
         // Setup adapter
         lv = (ListView) findViewById(R.id.channel_listview);
-        adapter = new ChannelAdapter(SelectChatRoomActivity.this, R.layout.channel_item, channels);
+        adapter = new ChannelAdapter(ChannelListActivity.this, R.layout.channel_item, channels);
         lv.setAdapter(adapter);
 
         // Register callback
@@ -55,7 +51,7 @@ public class SelectChatRoomActivity extends AppCompatActivity{
         findViewById(R.id.btn_add_channel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectChatRoomActivity.this.startActivity(new Intent(SelectChatRoomActivity.this, CreateNewChannelActivity.class));
+                ChannelListActivity.this.startActivity(new Intent(ChannelListActivity.this, CreateChannelActivity.class));
             }
         });
 
@@ -67,7 +63,7 @@ public class SelectChatRoomActivity extends AppCompatActivity{
             @Override
             public void done(List<ParseObject> channelList, ParseException e) {
                 if (e != null) {
-                    Toast.makeText(SelectChatRoomActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChannelListActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
                 } else {
                     // Clear existing data
                     channels.clear();
@@ -102,10 +98,10 @@ public class SelectChatRoomActivity extends AppCompatActivity{
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
                                            int position, long id) {
                 String requestedChannel = channels.get(position);
-                Intent intent = new Intent(SelectChatRoomActivity.this, ChatActivity.class);
+                Intent intent = new Intent(ChannelListActivity.this, ChatActivity.class);
                 intent.putExtra("channel", requestedChannel);
                 intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                SelectChatRoomActivity.this.startActivity(intent);
+                ChannelListActivity.this.startActivity(intent);
                 return false;
             }
         });
