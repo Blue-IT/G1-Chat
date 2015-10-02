@@ -2,7 +2,29 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorAccent">@color/red</item>
     </style>
+
+    <style name="MyEditTextStyle" parent="android:Widget.EditText">
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="MyTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="MyListViewStyle" parent="android:Widget.ListView">
+        <item name="android:divider">@color/red</item>
+        <item name="android:dividerHeight">1px</item>
+    </style>
+
+    <style name="MyButton" parent="android:Widget.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/lux_button</item>
+    </style>
+
 
 </resources>

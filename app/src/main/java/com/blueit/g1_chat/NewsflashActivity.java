@@ -107,6 +107,8 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                    newsflashArrayAdapter = new NewsflashAdapter(NewsflashActivity.this,
                            R.layout.newsflash_item, newsflashArrayList);
                    ListView listView = (ListView) findViewById(R.id.newsflash_list);
+                   listView.setHeaderDividersEnabled(true);
+                   listView.setDividerHeight(1);
                    listView.setAdapter(newsflashArrayAdapter);
 
                    if(currentUser.getBoolean("isAdmin")) {

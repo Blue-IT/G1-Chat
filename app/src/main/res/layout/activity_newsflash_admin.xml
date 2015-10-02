@@ -7,8 +7,11 @@
     tools:context="com.blueit.g1_chat.NewsflashActivity">
 
     <Button
+        style="@style/MyButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dip"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
         android:text="@string/create_newsflash"
         android:id="@+id/newsflash_submit"
         android:layout_gravity="center"

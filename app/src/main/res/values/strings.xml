@@ -3,7 +3,7 @@
     <string name="login_title">Login</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>
-    <string name="login_button_submit">Login</string>
+    <string name="login_button_submit">LOGIN</string>
     <string name="logout">Logout</string>
     <string name="chat">Chat</string>
     <string name="alert_wait">Please wait...</string>
@@ -15,22 +15,25 @@
     <string name="title_activity_create_newsflash">CreateNewsflashActivity</string>
     <string name="create_newsflash_title_hint">Title</string>
     <string name="create_newsflash_content_hint">Content</string>
-    <string name="create_newsflash_submit">Submit</string>
-    <string name="create_newsflash">Create Newsflash</string>
+    <string name="create_newsflash_submit">SUBMIT</string>
+    <string name="create_newsflash">CREATE NEWSFLASH</string>
     <string name="err_create_newsflash">Newsflash was not created.</string>
 
     <string name="title_activity_admin">Admin</string>
     <string name="add_user">User</string>
     <string name="add_news">News</string>
-    <string name="reg_user">Register user</string>
+    <string name="reg_user">REGISTER NEW USER</string>
     <string name="title_activity_user_list">Users</string>
 
     <string name="register_title">Register</string>
-    <string name="register_button_submit">Add</string>
+    <string name="register_button_submit">ADD USER</string>
     <string name="register_name">Name</string>
     <string name="activity_register">Register</string>
     <string name="chat_text">Comment</string>
     <string name="chat_button">Send</string>
+
+    <string name="name">NAME:</string>
+    <string name="username">USERNAME:</string>
 
 
 </resources>

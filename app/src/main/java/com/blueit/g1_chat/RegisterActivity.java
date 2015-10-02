@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),
                                         "Successfully Registered",
                                         Toast.LENGTH_LONG).show();
+                                        user();
                             } else {
                                 Toast.makeText(getApplicationContext(),
                                         "Register Error", Toast.LENGTH_LONG).show();
@@ -100,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void user(){
-        Intent intent = new Intent(RegisterActivity.this, RegisterActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, UserListActivity.class);
         startActivity(intent);
     }
 }
