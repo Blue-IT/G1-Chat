@@ -283,6 +283,9 @@ public class ChatActivity extends AppCompatActivity {
         // Set channel
         currentChannel = newChannel;
 
+        // Update title
+        setTitle(newChannel);
+
         // Initiate / Reset message array
         if (chatMessages != null) {
             chatMessages.clear();

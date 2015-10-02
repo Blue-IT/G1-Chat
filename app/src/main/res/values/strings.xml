@@ -16,11 +16,9 @@
     <string name="title_activity_create_newsflash">Create Newsflash</string>
     <string name="create_newsflash_title_hint">Title</string>
     <string name="create_newsflash_content_hint">Content</string>
-
     <string name="create_newsflash_submit">SUBMIT</string>
     <string name="create_newsflash">CREATE NEWSFLASH</string>
     <string name="edit_message">Edit Message</string>
-
     <string name="err_create_newsflash">Newsflash was not created.</string>
     <string name="title_activity_admin">Admin</string>
     <string name="add_user">User</string>
@@ -34,7 +32,6 @@
     <string name="title_activity_chat">Chat</string>
     <string name="chat_text">Comment</string>
     <string name="chat_button">Send</string>
-
     <string name="menu_delete">Delete</string>
     <string name="menu_edit">Edit</string>
     <string name="err_chat_refresh">Error when retrieving messages.</string>
@@ -42,12 +39,11 @@
     <string name="err_fields_illegal">The input contains illegal characters.</string>
     <string name="save_button">SAVE</string>
     <string name="title_activity_edit">EDIT</string>
-
-
     <string name="name">NAME:</string>
     <string name="username">USERNAME:</string>
-    <string name="create_channel">Create new channel</string>
+    <string name="create_channel">CREATE CHANNEL</string>
     <string name="save">Save</string>
-
+    <string name="title_activity_channel_list">Select Chat Channel</string>
+    <string name="title_activity_create_channel">New Chat Channel</string>
 
 </resources>

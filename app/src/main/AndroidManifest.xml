@@ -51,12 +51,12 @@
         </activity>
         <activity
             android:name=".ChannelListActivity"
-            android:label="@string/title_activity_chat"
+            android:label="@string/title_activity_channel_list"
             android:launchMode="singleTop">
         </activity>
         <activity
             android:name=".CreateChannelActivity"
-            android:label="@string/title_activity_chat">
+            android:label="@string/title_activity_create_channel">
         </activity>
 
     </application>
