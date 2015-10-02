@@ -71,9 +71,6 @@ public class ChatActivity extends AppCompatActivity {
         comment = (EditText) findViewById(R.id.chatText);
         final String currentUser = ParseUser.getCurrentUser().getString("name");
 
-        // Initiate chat
-        initChat();
-
         // Setup send message click listener
         findViewById(R.id.chatButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +87,7 @@ public class ChatActivity extends AppCompatActivity {
                     Toast.makeText(ChatActivity.this, R.string.err_fields_empty, Toast.LENGTH_LONG)
                             .show();
                     return;
-                }else if (Scomment.contains("<") || Scomment.contains(">")){
+                } else if (Scomment.contains("<") || Scomment.contains(">")) {
                     Toast.makeText(ChatActivity.this, R.string.err_fields_illegal, Toast.LENGTH_LONG)
                             .show();
                     return;
@@ -119,8 +116,11 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        // Setup context menu
         registerForContextMenu(listView);
 
+        // Initiate chat
+        initChat();
     }
 
     @Override
@@ -138,19 +138,14 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
         isRunning = true; // Resume querying the database
-        if(setupCompleted) { // Workaround to prevent conflict with onCreate
-            loadNewMessages();
-        }
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
         isRunning = false; // Do not query database while activity is not active
@@ -229,31 +224,36 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Request
+        // Handle edit message request
         if (requestCode == EDIT_MESSAGE_REQUEST) {
-
             if (resultCode == RESULT_OK) {
-
+                // Get edited text
                 newComment = data.getStringExtra("comment");
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("ChatMessage");
-                query.getInBackground(chatMessages.get(position).getObjectId(), new GetCallback<ParseObject>() {
-                    public void done(ParseObject currentMessage, ParseException e) {
+                // Query
+                ParseQuery<ChatMessage> query = ParseQuery.getQuery(ChatMessage.class);
+                query.getInBackground(chatMessages.get(position).getObjectId(), new GetCallback<ChatMessage>() {
+                    public void done(ChatMessage currentMessage, ParseException e) {
+                        // Success
                         if (e == null) {
-                            currentMessage.put("content",newComment);
+                            // Save
+                            currentMessage.setContent(newComment);
                             currentMessage.saveInBackground();
                             Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_SHORT).show();
-                        } else {
+                        }
+                        // Error
+                        else {
                             Log.e("Error", e.getMessage());
                             Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
 
+                // Update view right away
+                chatMessages.get(position).setContent(newComment);
+                chatAdapter.notifyDataSetChanged();
             }
         }
-        chatMessages.get(position).setContent(newComment);
-        chatAdapter.notifyDataSetChanged();
     }
 
     /**
