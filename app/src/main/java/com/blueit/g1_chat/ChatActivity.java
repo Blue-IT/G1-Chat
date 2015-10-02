@@ -1,6 +1,5 @@
 package com.blueit.g1_chat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -159,6 +158,9 @@ public class ChatActivity extends AppCompatActivity {
         int position = info.position;
         switch(item.getItemId()) {
             case R.id.edit:
+                Intent intent = new Intent(ChatActivity.this, EditMessageActivity.class);
+                intent.putExtra("content", chatMessages.get(position).getString("content").toString());
+                startActivity(intent);
 
                 // edit stuff here
 
@@ -321,5 +323,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
             }
+
+
 
         }
