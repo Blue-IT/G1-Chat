@@ -1,6 +1,5 @@
 package com.blueit.g1_chat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import com.blueit.g1_chat.adapters.ChatAdapter;
 import com.blueit.g1_chat.parseobjects.ChatMessage;
-import com.blueit.g1_chat.parseobjects.Newsflash;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -163,29 +161,17 @@ public class ChatActivity extends AppCompatActivity {
         position = info.position;
         switch(item.getItemId()) {
             case R.id.edit:
+
                 //Edit message
                 Intent intent = new Intent(ChatActivity.this, CreateNewsflashActivity.class);
                 startActivityForResult(intent, EDIT_MESSAGE_REQUEST);
                 return true;
             case R.id.delete:
                 //Delete with notification
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("ChatMessage");
-                query.getInBackground(chatMessages.get(position).getObjectId(), new GetCallback<ParseObject>() {
-                    public void done(ParseObject currentMessage, ParseException e) {
-                        if (e == null) {
-                            currentMessage.put("content", "Deleted by " + currentMessage.getString("author"));
-                            currentMessage.put("author", "");
-                            currentMessage.saveInBackground();
-                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e("Error", e.getMessage());
-                            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
                 String updatedMessage = "Deleted by " + chatMessages.get(position).getAuthor();
                 chatMessages.get(position).setContent(updatedMessage);
                 chatMessages.get(position).setAuthor("");
+                chatMessages.get(position).saveInBackground();
                 chatAdapter.notifyDataSetChanged();
                 return true;
             default:
@@ -346,6 +332,8 @@ public class ChatActivity extends AppCompatActivity {
                 });
 
             }
+
+
 
         }
         chatMessages.get(position).setContent(newComment);
