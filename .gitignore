@@ -55,6 +55,11 @@ captures/
 .idea/workspace.xml
 .idea/misc.xml
 
+# I'm through with this !@#$
+.idea/
+app/app.iml
+*.iml
+
 #NDK
 obj/
 app/app.iml
