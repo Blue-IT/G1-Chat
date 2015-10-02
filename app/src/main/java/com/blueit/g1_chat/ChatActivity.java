@@ -163,15 +163,14 @@ public class ChatActivity extends AppCompatActivity {
             case R.id.edit:
 
                 //Edit message
-                Intent intent = new Intent(ChatActivity.this, EditMessage.class);
+                Intent intent = new Intent(ChatActivity.this, EditMessageActivity.class);
+                intent.putExtra("content", chatMessages.get(position).getString("content").toString());
                 startActivityForResult(intent, EDIT_MESSAGE_REQUEST);
                 return true;
             case R.id.delete:
                 //Delete with notification
-                String updatedMessage = "Deleted by " + chatMessages.get(position).getAuthor();
-                chatMessages.get(position).setContent(updatedMessage);
-                chatMessages.get(position).setAuthor("");
-                chatMessages.get(position).saveInBackground();
+                chatMessages.get(position).deleteInBackground();
+                chatMessages.remove(position);
                 chatAdapter.notifyDataSetChanged();
                 return true;
             default:

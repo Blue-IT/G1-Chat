@@ -45,7 +45,7 @@
             android:label="@string/title_activity_chat" >
         </activity>
         <activity
-            android:name=".EditMessage"
+            android:name=".EditMessageActivity"
             android:label="@string/title_activity_edit" >
         </activity>
 

@@ -1,39 +1,41 @@
 package com.blueit.g1_chat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class EditMessageActivity extends AppCompatActivity {
+public class EditMessageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText newMessage;
-    String messageContent;
+    private EditText inputComment;
 
     MasterMenu menu = new MasterMenu(EditMessageActivity.this);
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_message);
-        // Retrieve data
+        setContentView(R.layout.activity_edit);
+
         Intent i = getIntent();
         // Get the message
-        messageContent = i.getStringExtra("content");
-        newMessage = (EditText) findViewById(R.id.edit_message);
-        newMessage.setText(messageContent);
+        String messageContent = i.getStringExtra("content");
 
+        inputComment = (EditText) findViewById(R.id.edit_message);
+        inputComment.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        inputComment.setText(messageContent);
+        setClick(R.id.send_button);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_user, menu);
-        MenuItem item = menu.findItem(R.id.action_chat);
-        item.setVisible(false);
-        invalidateOptionsMenu();
         return true;
     }
 
@@ -53,10 +55,43 @@ public class EditMessageActivity extends AppCompatActivity {
             menu.user();
         }else if(id == R.id.action_chat){
             menu.chat();
-        }else if(id == R.id.action_admin){
-            menu.admin();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void onClick(View v)
+    {
+        int id = v.getId();
+
+        if (id == R.id.send_button)
+        {
+            editMessage();
+        }
+
+    }
+
+    public void editMessage(){
+
+        String comment = inputComment.getText().toString();
+
+        if (comment.equals("")) {
+            Toast.makeText(EditMessageActivity.this, R.string.error_fields_empty, Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        setResult(Activity.RESULT_OK,
+                new Intent().putExtra("comment", comment));
+        finish();
+    }
+
+    public View setClick(int id)
+    {
+        View v = findViewById(id);
+        if (v != null)
+            v.setOnClickListener(this);
+        return v;
+    }
+
 }
