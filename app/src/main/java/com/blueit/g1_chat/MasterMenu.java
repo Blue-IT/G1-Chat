@@ -41,7 +41,7 @@ public class MasterMenu {
     }
 
     public void chat(){
-        Intent intent = new Intent(context, ChatActivity.class);
+        Intent intent = new Intent(context, SelectChatRoomActivity.class);
         context.startActivity(intent);
     }
 

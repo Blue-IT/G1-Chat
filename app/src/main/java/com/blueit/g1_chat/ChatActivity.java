@@ -33,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
 
     String DEFAULT_CHANNEL = "default";
     int MESSAGE_HISTORY_LIMIT = 10;
-    int MESSAGE_REFRESH_MS = 1000;
+    int MESSAGE_REFRESH_MS = 5000;
     private EditText comment;
     static final int EDIT_MESSAGE_REQUEST = 1;
     int position;
@@ -70,8 +70,18 @@ public class ChatActivity extends AppCompatActivity {
         final String currentUser = ParseUser.getCurrentUser().getUsername();
 
         // Initiate chat
-        Log.d("G1CHAT", "onCreate calls switchChannel");
-        switchChannel(DEFAULT_CHANNEL);
+        Log.d("G1CHAT", "onCreate about to call switchChannel");
+        Intent intent = getIntent();
+        String requestedChannel = intent.getStringExtra("channel");
+        if(requestedChannel != null || !requestedChannel.equals("")) {
+            Log.d("G1CHAT", "Using requested channel");
+            switchChannel(requestedChannel);
+        }
+        else {
+            Log.d("G1CHAT", "Using default channel");
+            switchChannel(DEFAULT_CHANNEL);
+        }
+
 
         // Setup send message click listener
         findViewById(R.id.chatButton).setOnClickListener(new View.OnClickListener() {
@@ -223,6 +233,15 @@ public class ChatActivity extends AppCompatActivity {
                     chatMessages = new ArrayList<ChatMessage>();
                 }
 
+                // Configure the adapter which feeds data into the view
+                if (chatAdapter != null) {
+                    chatAdapter.notifyDataSetChanged();
+                } else {
+                    chatAdapter = new ChatAdapter(ChatActivity.this,
+                            R.layout.chat_item, chatMessages);
+                    listView.setAdapter(chatAdapter);
+                }
+
                 // Query database and retrieve messages
                 Log.d("G1CHAT", "switchChannel calls loadNewMessages");
                 loadNewMessages();
@@ -264,15 +283,7 @@ public class ChatActivity extends AppCompatActivity {
 
                             // Insert all remaining entries into our data list
                             chatMessages.addAll(messages);
-
-                            // Configure the adapter which feeds data into the view
-                            if (chatAdapter != null) {
-                                chatAdapter.notifyDataSetChanged();
-                            } else {
-                                chatAdapter = new ChatAdapter(ChatActivity.this,
-                                        R.layout.chat_item, chatMessages);
-                                listView.setAdapter(chatAdapter);
-                            }
+                            chatAdapter.notifyDataSetChanged();
 
                             // Store latest date
                             if (!chatMessages.isEmpty()) {

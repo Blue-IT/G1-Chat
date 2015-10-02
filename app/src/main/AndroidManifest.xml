@@ -48,6 +48,14 @@
             android:name=".EditMessageActivity"
             android:label="@string/title_activity_edit" >
         </activity>
+        <activity
+            android:name=".SelectChatRoomActivity"
+            android:label="@string/title_activity_chat" >
+        </activity>
+        <activity
+            android:name=".CreateNewChannelActivity"
+            android:label="@string/title_activity_chat" >
+        </activity>
 
     </application>
 
