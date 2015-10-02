@@ -214,32 +214,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         newsflashArrayList.get(position).setContent(newComment);
         newsflashArrayAdapter.notifyDataSetChanged();
     }
-
-    //Delete news with a longclick
-    /*public void deleteNews(final ArrayList<Newsflash> data){
-        ListView list = (ListView)findViewById(R.id.newsflash_list);
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
-                                           int position, long id) {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Newsflash");
-                query.getInBackground(data.get(position).getObjectId(), new GetCallback<ParseObject>() {
-                    public void done(ParseObject currentNews, ParseException e) {
-                        if (e == null) {
-                            currentNews.deleteInBackground();
-                            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e("Error", e.getMessage());
-                            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-                newsflashArrayList.remove(position);//arg2 is position of the clicked item
-                newsflashArrayAdapter.notifyDataSetChanged();
-                return false;
-            }
-        });
-    }*/
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(ParseUser.getCurrentUser().getBoolean("isAdmin")) {
