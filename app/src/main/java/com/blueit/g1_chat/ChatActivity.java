@@ -163,7 +163,7 @@ public class ChatActivity extends AppCompatActivity {
             case R.id.edit:
 
                 //Edit message
-                Intent intent = new Intent(ChatActivity.this, ChatMessage.class);
+                Intent intent = new Intent(ChatActivity.this, EditMessage.class);
                 startActivityForResult(intent, EDIT_MESSAGE_REQUEST);
                 return true;
             case R.id.delete:
