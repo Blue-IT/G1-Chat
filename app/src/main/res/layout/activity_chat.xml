@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ListView
+        style="@style/MyListViewStyle"
         android:id="@+id/chat_list"
         android:transcriptMode="alwaysScroll"
         android:layout_alignParentTop="true"
@@ -13,7 +13,12 @@
         android:layout_above="@+id/Send"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:stackFromBottom="true"/>
+        android:stackFromBottom="true"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        />
     <RelativeLayout
         android:id="@+id/Send"
         android:layout_alignParentBottom="true"
@@ -21,6 +26,7 @@
         android:layout_height="wrap_content" >
 
         <EditText
+            style="@style/MyEditTextStyle"
             android:id="@+id/chatText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

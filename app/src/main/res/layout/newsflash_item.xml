@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:textColor="@color/grey"
+        style="@style/MyTextViewStyle"
         android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:layout_alignParentStart="true" />
 
     <TextView
-        style="@style/MyTextViewStyle"
+        android:textColor="@color/grey"
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
