@@ -19,14 +19,13 @@ android:orientation="horizontal" >
     android:id="@+id/edit_message"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:hint="@string/edit_message" />
+    android:layout_centerInParent="true"/>
 <Button
     style="@style/MyButton"
     android:id="@+id/send_button"
     android:layout_width="wrap_content"
     android:layout_height="30dip"
-    android:text="@string/title_activity_edit"
+    android:text="@string/save_button"
     android:layout_marginTop="35dp"
     android:layout_below="@+id/edit_message"
     android:layout_centerHorizontal="true"/>

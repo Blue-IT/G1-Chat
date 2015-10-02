@@ -40,8 +40,8 @@
     <string name="err_chat_refresh">Error when retrieving messages.</string>
     <string name="err_chat_send">Error when sending message.</string>
     <string name="err_fields_illegal">The input contains illegal characters.</string>
-    <string name="save_button">Save</string>
-    <string name="title_activity_edit">EDIT MESSAGE</string>
+    <string name="save_button">SAVE</string>
+    <string name="title_activity_edit">EDIT</string>
 
 
     <string name="name">NAME:</string>
