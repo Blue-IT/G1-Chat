@@ -51,7 +51,7 @@ public class SelectChatRoomActivity extends AppCompatActivity{
         // Fetch channels from database
         refreshChannelList();
 
-        // Select Chat Room Activity Start
+        // Setup click listener for Create Channel button
         findViewById(R.id.btn_add_channel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +69,10 @@ public class SelectChatRoomActivity extends AppCompatActivity{
                 if (e != null) {
                     Toast.makeText(SelectChatRoomActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
                 } else {
+                    // Clear existing data
                     channels.clear();
+
+                    // Load new data
                     Log.d("G1CHAT", "channelList callback");
                     Log.d("G1CHAT", "there are " + channelList.size() + " results");
                     for(ParseObject channelObject : channelList) {
@@ -77,6 +80,8 @@ public class SelectChatRoomActivity extends AppCompatActivity{
                         Log.d("G1CHAT", "adding channel " + channel);
                         channels.add(channel);
                     }
+
+                    // Update
                     Log.d("G1CHAT", "notifying changed");
                     adapter.notifyDataSetChanged();
                 }
@@ -99,6 +104,7 @@ public class SelectChatRoomActivity extends AppCompatActivity{
                 String requestedChannel = channels.get(position);
                 Intent intent = new Intent(SelectChatRoomActivity.this, ChatActivity.class);
                 intent.putExtra("channel", requestedChannel);
+                intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 SelectChatRoomActivity.this.startActivity(intent);
                 return false;
             }
