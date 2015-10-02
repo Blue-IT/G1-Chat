@@ -31,16 +31,16 @@ public class CreateNewChannelActivity extends AppCompatActivity implements View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_newsflash);
+        setContentView(R.layout.activity_create_channel);
 
-        inputTitle =  (EditText) findViewById(R.id.create_newsflash_title);
-        setClick(R.id.create_newsflash_submit);
+        inputTitle =  (EditText) findViewById(R.id.edit_message);
+        setClick(R.id.send_button);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_admin, menu);
+        getMenuInflater().inflate(R.menu.menu_user, menu);
         return true;
     }
 
@@ -73,7 +73,7 @@ public class CreateNewChannelActivity extends AppCompatActivity implements View.
     {
         int id = v.getId();
 
-        if (id == R.id.create_newsflash_submit)
+        if (id == R.id.send_button)
         {
             createChannel();
         }

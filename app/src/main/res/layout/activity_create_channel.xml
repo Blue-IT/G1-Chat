@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="horizontal" >
+    <TextView
+        style="@style/MyTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name your channel"
+        android:id="@+id/textView"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:layout_above="@+id/edit_message"
+        android:layout_centerHorizontal="true"/>
+
+<EditText
+    style="@style/MyEditTextStyle"
+    android:id="@+id/edit_message"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:hint="@string/edit_message" />
+<Button
+    style="@style/MyButton"
+    android:id="@+id/send_button"
+    android:layout_width="wrap_content"
+    android:layout_height="30dip"
+    android:text="@string/save"
+    android:layout_marginTop="35dp"
+    android:layout_below="@+id/edit_message"
+    android:layout_centerHorizontal="true"/>
+</RelativeLayout>

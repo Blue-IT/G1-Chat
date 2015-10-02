@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.blueit.g1_chat.adapters.ChannelAdapter;
 import com.blueit.g1_chat.adapters.UserListAdapter;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
@@ -28,18 +29,20 @@ import java.util.List;
 public class SelectChatRoomActivity extends AppCompatActivity{
 
     ParseUser currentUser = ParseUser.getCurrentUser();
-    ArrayAdapter<ParseObject> adapter;
+    ArrayAdapter<String> adapter;
     List<String> channels = new ArrayList<String>();
     MasterMenu menu = new MasterMenu(SelectChatRoomActivity.this);
+
+    ListView lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_list);
+        setContentView(R.layout.activity_channel_list);
 
         // Setup adapter
-        ListView lv = (ListView) findViewById(R.id.user_listview);
-        adapter = new ArrayAdapter(SelectChatRoomActivity.this, android.R.layout.simple_list_item_1, channels);
+        lv = (ListView) findViewById(R.id.channel_listview);
+        adapter = new ChannelAdapter(SelectChatRoomActivity.this, R.layout.channel_item, channels);
         lv.setAdapter(adapter);
 
         // Register callback
@@ -49,7 +52,7 @@ public class SelectChatRoomActivity extends AppCompatActivity{
         refreshChannelList();
 
         // Select Chat Room Activity Start
-        findViewById(R.id.btn_reg_user).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_add_channel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SelectChatRoomActivity.this.startActivity(new Intent(SelectChatRoomActivity.this, CreateNewChannelActivity.class));
@@ -89,8 +92,7 @@ public class SelectChatRoomActivity extends AppCompatActivity{
     }
 
     public void registerListClickCallback(final List<String> data) {
-        ListView list = (ListView)findViewById(R.id.user_listview);
-        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
                                            int position, long id) {
@@ -106,8 +108,8 @@ public class SelectChatRoomActivity extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_admin, menu);
-        MenuItem item = menu.findItem(R.id.action_user);
+        getMenuInflater().inflate(R.menu.menu_user, menu);
+        MenuItem item = menu.findItem(R.id.action_chat);
         item.setVisible(false);
         invalidateOptionsMenu();
         return true;

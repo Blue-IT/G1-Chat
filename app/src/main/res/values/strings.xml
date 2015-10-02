@@ -46,6 +46,8 @@
 
     <string name="name">NAME:</string>
     <string name="username">USERNAME:</string>
+    <string name="create_channel">Create new channel</string>
+    <string name="save">Save</string>
 
 
 </resources>
