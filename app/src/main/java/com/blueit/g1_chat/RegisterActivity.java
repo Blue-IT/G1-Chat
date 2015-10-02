@@ -66,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         "Successfully Registered",
                                         Toast.LENGTH_LONG).show();
                                 finish();
+
                             } else {
                                 Toast.makeText(getApplicationContext(),
                                         "Register Error", Toast.LENGTH_LONG).show();
@@ -104,4 +105,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

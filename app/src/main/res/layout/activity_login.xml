@@ -10,12 +10,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="10dp"
         android:id="@+id/imageView"
-        android:background="@drawable/logo"
+        android:background="@drawable/g1chat"
         android:layout_gravity="center_horizontal" />
 
     <EditText
+        style="@style/MyEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -27,20 +29,25 @@
         android:nextFocusForward="@+id/pass_text"
         android:nextFocusDown="@+id/pass_text"/>
 
+
     <EditText
+        style="@style/MyEditTextStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/pass_text"
-        android:hint="@string/login_password"
         android:singleLine="true"
         android:focusable="true"
         android:nextFocusForward="@+id/sign_in_button"
         android:nextFocusDown="@+id/sign_in_button"
-        android:nextFocusUp="@+id/name_text"/>
+        android:nextFocusUp="@+id/name_text"
+        android:hint="@string/login_password"/>
+
+
 
     <Button
+        style="@style/MyButton"
         android:layout_width="fill_parent"
         android:layout_height="22dp"
         android:layout_marginTop="20dp"
@@ -48,7 +55,6 @@
         android:id="@+id/sign_in_button"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.11"
-        android:background="#e1e1e1"
         android:focusable="true"
         android:nextFocusForward="@+id/name_text"
         android:nextFocusDown="@+id/name_text"

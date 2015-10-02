@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,7 +15,7 @@ import com.parse.ParseUser;
 
 import com.blueit.g1_chat.security.SecurityUtil;
 
-public class LoginActivity extends Activity
+public class LoginActivity extends AppCompatActivity
 {
     private EditText username;
     private EditText password;
