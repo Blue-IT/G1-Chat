@@ -35,6 +35,9 @@ public class ChatActivity extends AppCompatActivity {
     int MESSAGE_HISTORY_LIMIT = 10;
     int MESSAGE_REFRESH_MS = 1000;
     private EditText comment;
+    static final int EDIT_MESSAGE_REQUEST = 1;
+    int position;
+    String newComment;
 
     String currentChannel;
     ArrayList<ChatMessage> chatMessages;
@@ -142,7 +145,7 @@ public class ChatActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info =
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
         String author = chatMessages.get(info.position).getAuthor();
-        //Context menu pops up only for the cuurent user.
+        //Context menu pops up only for the current user.
         if (author.equals(ParseUser.getCurrentUser().getUsername())) {
 
             if (v.getId() == R.id.chat_list) {
@@ -155,15 +158,13 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int position = info.position;
+        position = info.position;
         switch(item.getItemId()) {
             case R.id.edit:
-                Intent intent = new Intent(ChatActivity.this, EditMessageActivity.class);
-                intent.putExtra("content", chatMessages.get(position).getString("content").toString());
-                startActivity(intent);
 
-                // edit stuff here
-
+                //Edit message
+                Intent intent = new Intent(ChatActivity.this, CreateNewsflashActivity.class);
+                startActivityForResult(intent, EDIT_MESSAGE_REQUEST);
                 return true;
             case R.id.delete:
                 //Delete with notification
@@ -177,9 +178,6 @@ public class ChatActivity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -310,7 +308,35 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
             }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Request
+        if (requestCode == EDIT_MESSAGE_REQUEST) {
+
+            if (resultCode == RESULT_OK) {
+
+                newComment = data.getStringExtra("comment");
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("ChatMessage");
+                query.getInBackground(chatMessages.get(position).getObjectId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject currentMessage, ParseException e) {
+                        if (e == null) {
+                            currentMessage.put("content",newComment);
+                            currentMessage.saveInBackground();
+                            Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("Error", e.getMessage());
+                            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
 
 
 
         }
+        chatMessages.get(position).setContent(newComment);
+        chatAdapter.notifyDataSetChanged();
+    }
+}

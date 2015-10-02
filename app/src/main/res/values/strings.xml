@@ -8,6 +8,7 @@
     <string name="chat">Chat</string>
     <string name="alert_wait">Please wait...</string>
     <string name="err_fields_empty">Please fill in all the fields.</string>
+    <string name="error_fields_empty">Please fill in the field.</string>
     <string name="err_login">The username or password is incorrect.</string>
     <string name="title_activity_newsflash">Newsflash</string>
     <string name="hello_world">Hello world!</string>
@@ -15,8 +16,11 @@
     <string name="title_activity_create_newsflash">Create Newsflash</string>
     <string name="create_newsflash_title_hint">Title</string>
     <string name="create_newsflash_content_hint">Content</string>
+
     <string name="create_newsflash_submit">SUBMIT</string>
     <string name="create_newsflash">CREATE NEWSFLASH</string>
+    <string name="edit_message">Edit Message</string>
+
     <string name="err_create_newsflash">Newsflash was not created.</string>
     <string name="title_activity_admin">Admin</string>
     <string name="add_user">User</string>
