@@ -104,7 +104,8 @@ public class CreateNewsflashActivity extends AppCompatActivity implements View.O
                             new Intent().putExtra("id", entry.getObjectId()));
                     finish();
                 } else {
-                    CancelActivity();
+                    setResult(Activity.RESULT_FIRST_USER);
+                    finish();
                 }
             }
         });
