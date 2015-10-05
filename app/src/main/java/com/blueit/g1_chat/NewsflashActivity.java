@@ -214,7 +214,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         newsflashArrayList.get(position).setContent(newComment);
         newsflashArrayAdapter.notifyDataSetChanged();
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(ParseUser.getCurrentUser().getBoolean("isAdmin")) {
