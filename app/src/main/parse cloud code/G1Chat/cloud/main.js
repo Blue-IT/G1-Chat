@@ -25,11 +25,11 @@ Parse.Cloud.beforeSave("ChatMessage", function(request, response) {
 	var message = request.object;
 	var msgChannel = message.get("channel");
 	
-	alert("Shit is about to get real");
-	
 	var Channel = Parse.Object.extend("Channel");
 	var query = new Parse.Query(Channel);
 	query.equalTo("name", msgChannel);
+	// If there is more than 1 result we already know something is wrong
+	query.limit(2);
 	query.find({
 		success: function(results) {
 			if (results.length != 1) {
