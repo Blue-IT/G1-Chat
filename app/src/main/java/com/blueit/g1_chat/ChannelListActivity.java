@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.blueit.g1_chat.adapters.ChannelAdapter;
+import com.blueit.g1_chat.parseobjects.Channel;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -27,8 +28,8 @@ public class ChannelListActivity extends AppCompatActivity{
     private static final String TAG = "ChannelListActivity";
 
     ParseUser currentUser = ParseUser.getCurrentUser();
-    ArrayAdapter<String> adapter;
-    List<String> channels = new ArrayList<String>();
+    ChannelAdapter adapter;
+    List<Channel> channels = new ArrayList<>();
     MasterMenu menu = new MasterMenu(ChannelListActivity.this);
 
     ListView lv;
@@ -106,7 +107,7 @@ public class ChannelListActivity extends AppCompatActivity{
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
                                            int position, long id) {
-                String requestedChannel = channels.get(position);
+                String requestedChannel = channels.get(position).getName();
                 Intent intent = new Intent(ChannelListActivity.this, ChatActivity.class);
                 intent.putExtra("channel", requestedChannel);
                 intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -120,10 +121,10 @@ public class ChannelListActivity extends AppCompatActivity{
      * Fetches the channel list from the database and pushes it to the view.
      */
     private void refreshChannelList() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Channel");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        ParseQuery<Channel> query = ParseQuery.getQuery(Channel.class);
+        query.findInBackground(new FindCallback<Channel>() {
             @Override
-            public void done(List<ParseObject> channelList, ParseException e) {
+            public void done(List<Channel> channelList, ParseException e) {
                 if (e != null) {
                     Toast.makeText(ChannelListActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
                 } else {
@@ -132,10 +133,7 @@ public class ChannelListActivity extends AppCompatActivity{
 
                     // Load new data
                     Log.d(TAG, "refreshChannelList callback, there are " + channelList.size() + " results");
-                    for(ParseObject channelObject : channelList) {
-                        String channel = channelObject.getString("name");
-                        channels.add(channel);
-                    }
+                    channels.addAll(channelList);
 
                     // Update
                     adapter.notifyDataSetChanged();

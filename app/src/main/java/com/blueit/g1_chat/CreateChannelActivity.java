@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.blueit.g1_chat.parseobjects.Channel;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -89,17 +90,17 @@ public class CreateChannelActivity extends AppCompatActivity implements View.OnC
         }
 
         // Verify does not already exist
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Channel");
-        query.findInBackground(new FindCallback<ParseObject>() {
+        ParseQuery<Channel> query = ParseQuery.getQuery(Channel.class);
+        query.findInBackground(new FindCallback<Channel>() {
             @Override
-            public void done(List<ParseObject> channelList, ParseException e) {
+            public void done(List<Channel> channelList, ParseException e) {
                 if (e != null) {
                     Toast.makeText(CreateChannelActivity.this, "Error " + e, Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d("G1CHAT", "Verification Channel List callback");
                     Log.d("G1CHAT", "there are " + channelList.size() + " results");
-                    for (ParseObject channelObject : channelList) {
-                        String channel = channelObject.getString("name");
+                    for (Channel channelObject : channelList) {
+                        String channel = channelObject.getName();
                         Log.d("G1CHAT", "checking channel " + channel);
                         if (channel.equals(title)) {
                             Toast.makeText(CreateChannelActivity.this, R.string.err_fields_illegal, Toast.LENGTH_LONG)
@@ -112,8 +113,8 @@ public class CreateChannelActivity extends AppCompatActivity implements View.OnC
 
                     // Create parseobject
                     Log.d("G1CHAT", "Creating channel " + title);
-                    ParseObject entry = new ParseObject("Channel");
-                    entry.put("name", title);
+                    Channel entry = new Channel();
+                    entry.setName(title);
 
                     // Save
                     entry.saveInBackground(new SaveCallback() {

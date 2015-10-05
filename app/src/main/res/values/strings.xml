@@ -45,5 +45,6 @@
     <string name="save">Save</string>
     <string name="title_activity_channel_list">Select Chat Channel</string>
     <string name="title_activity_create_channel">New Chat Channel</string>
+    <string name="channel_name">Name</string>
 
 </resources>
