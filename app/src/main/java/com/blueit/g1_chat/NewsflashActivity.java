@@ -78,10 +78,10 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                     layout.addView(child);
                 }
 
-                // Set the list element from the main layout to be drawn relatively to the create newsflash button from the admin layout
+                // Set the list element from the main layout to be drawn
+                // relatively to the create newsflash button from the admin layout
                 ListView list = (ListView) findViewById(R.id.newsflash_list);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) list.getLayoutParams();
                 params.addRule(RelativeLayout.ABOVE, R.id.newsflash_submit);
                 list.setLayoutParams(params);
 
