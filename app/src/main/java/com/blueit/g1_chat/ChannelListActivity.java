@@ -103,15 +103,23 @@ public class ChannelListActivity extends AppCompatActivity{
      * Callback when channels are clicked in the list
      */
     private void registerListClickCallback() {
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
-                                           int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String requestedChannel = channels.get(position).getName();
                 Intent intent = new Intent(ChannelListActivity.this, ChatActivity.class);
                 intent.putExtra("channel", requestedChannel);
                 intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 ChannelListActivity.this.startActivity(intent);
+            }
+        });
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View viewClicked,
+                                           int position, long id) {
+                // Context menu?
                 return false;
             }
         });
