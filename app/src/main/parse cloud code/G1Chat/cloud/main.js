@@ -52,8 +52,6 @@ Parse.Cloud.afterSave("ChatMessage", function(request) {
 	var content = message.get("content");
 	var channel = message.get("channel");
 	
-	
-	
     console.log("Message received from [" + author + "]: '" + content + "'");
 	
 	Parse.Push.send({
