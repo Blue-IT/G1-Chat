@@ -35,7 +35,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = "ChatActivity";
 
-    String DEFAULT_CHANNEL = "default";
+    String DEFAULT_CHANNEL = "Default";
     int MESSAGE_HISTORY_LIMIT = 10;
     int MESSAGE_REFRESH_MS = 5000;
     private EditText comment;
