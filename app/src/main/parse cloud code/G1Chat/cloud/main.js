@@ -37,9 +37,9 @@ Parse.Cloud.beforeSave("ChatMessage", function(request, response) {
 			"(ง ͠° ͟ل͜ ͡°)ง", "( ͡°╭͜ʖ╮͡° )", "( ͡^ ͜ʖ ͡^)"
 		];
 		var lennyIndex = Math.floor(Math.random() * (lennyFaces.length));
-		var lenny = " " + lennyFaces[lennyIndex];
+		var lenny = lennyFaces[lennyIndex];
 		
-		message.set("content", content + lenny);
+		message.set("content", content + " " + lenny);
 	}
 	else {
 		message.set("content", "Jag älskar rosa enhörningar!");
