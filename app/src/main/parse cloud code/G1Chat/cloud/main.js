@@ -25,6 +25,13 @@ Parse.Cloud.beforeSave("ChatMessage", function(request, response) {
 	var message = request.object;
 	var msgChannel = message.get("channel");
 	
+	if (msgChannel === "Purrfect") {
+		message.set("content", "Meow!");
+	}
+	else {
+		message.set("content", "Jag älskar rosa enhörningar!");
+	}
+	
 	// Verify that the channel actually exists
 	var Channel = Parse.Object.extend("Channel");
 	var query = new Parse.Query(Channel);
