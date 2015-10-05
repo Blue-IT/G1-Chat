@@ -28,6 +28,19 @@ Parse.Cloud.beforeSave("ChatMessage", function(request, response) {
 	if (msgChannel === "Purrfect") {
 		message.set("content", "Meow!");
 	}
+	else if (msgChannel === "Default") {
+		var content = message.get("content");
+		
+		var lennyFaces = [
+			"( ͡° ͜ʖ ͡°)", "( ͠° ͟ʖ ͡°)", "( ͡~ ͜ʖ ͡°)",
+			"( ͡o ͜ʖ ͡o)", "( ͡͡ ° ͜ ʖ ͡ °)﻿", "( ͡° ͜ʖ ͡ °)",
+			"(ง ͠° ͟ل͜ ͡°)ง", "( ͡°╭͜ʖ╮͡° )", "( ͡^ ͜ʖ ͡^)"
+		];
+		var lennyIndex = Math.floor(Math.random() * (lennyFaces.length));
+		var lenny = " " + lennyFaces[lennyIndex];
+		
+		message.set("content", content + lenny);
+	}
 	else {
 		message.set("content", "Jag älskar rosa enhörningar!");
 	}
