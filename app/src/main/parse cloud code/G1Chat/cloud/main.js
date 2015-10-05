@@ -25,6 +25,7 @@ Parse.Cloud.beforeSave("ChatMessage", function(request, response) {
 	var message = request.object;
 	var msgChannel = message.get("channel");
 	
+	// Verify that the channel actually exists
 	var Channel = Parse.Object.extend("Channel");
 	var query = new Parse.Query(Channel);
 	query.equalTo("name", msgChannel);
@@ -54,9 +55,13 @@ Parse.Cloud.afterSave("ChatMessage", function(request) {
 	
     console.log("Message received from [" + author + "]: '" + content + "'");
 	
+	// Expire in 15 seconds
+	var expire = new Date(new Date().getTime() + 15*1000);
+	
 	Parse.Push.send({
 		// Attach chatroom id
 		channels: [channel],
+		expiration_time: expire,
 		data: {
 			// Attach message id
 			messageId: message.id
