@@ -21,11 +21,38 @@ Parse.Cloud.beforeSave(Parse.User, function(request, response) {
 });
 
 // Called when a new chat message is received
+Parse.Cloud.beforeSave("ChatMessage", function(request, response) {
+	var message = request.object;
+	var msgChannel = message.get("channel");
+	
+	alert("Shit is about to get real");
+	
+	var Channel = Parse.Object.extend("Channel");
+	var query = new Parse.Query(Channel);
+	query.equalTo("name", msgChannel);
+	query.find({
+		success: function(results) {
+			if (results.length != 1) {
+				response.error("No valid chat channel");
+			}
+			else {
+				response.success(message);
+			}
+		},
+		error: function(err) {
+			response.error(err);
+		}
+	});
+});
+
+// Called when a new chat message has been approved
 Parse.Cloud.afterSave("ChatMessage", function(request) {
 	var message = request.object;
 	var author = message.get("author");
 	var content = message.get("content");
 	var channel = message.get("channel");
+	
+	
 	
     console.log("Message received from [" + author + "]: '" + content + "'");
 	
