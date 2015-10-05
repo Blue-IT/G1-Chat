@@ -23,6 +23,7 @@ public class EditMessageActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_edit);
 
         Intent i = getIntent();
+
         // Get the message
         String messageContent = i.getStringExtra("content");
 

@@ -9,18 +9,19 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.blueit.g1_chat.R;
+import com.blueit.g1_chat.parseobjects.Channel;
 import com.blueit.g1_chat.parseobjects.Newsflash;
 import com.parse.ParseObject;
 
 import java.util.List;
 
-public class ChannelAdapter extends ArrayAdapter<String> {
+public class ChannelAdapter extends ArrayAdapter<Channel> {
 
     Context context;
     int layoutResourceId;
-    List<String> data = null;
+    List<Channel> data = null;
 
-    public ChannelAdapter(Context context, int layoutResourceId, List<String> data) {
+    public ChannelAdapter(Context context, int layoutResourceId, List<Channel> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -47,8 +48,8 @@ public class ChannelAdapter extends ArrayAdapter<String> {
             holder = (ChannelHolder) row.getTag();
         }
 
-        String title = getItem(position);
-        holder.title.setText(title);
+        Channel channel = getItem(position);
+        holder.title.setText(channel.getName());
 
         return row;
     }

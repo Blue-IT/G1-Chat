@@ -33,6 +33,8 @@ import com.blueit.g1_chat.parseobjects.Newsflash;
 
 public class NewsflashActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "NewsflashActivity";
+
     static final int CREATE_NEWSFLASH_REQUEST = 1;  // The request code
     static final int EDIT_MESSAGE_REQUEST = 2;
 
@@ -76,10 +78,10 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                     layout.addView(child);
                 }
 
-                // Set the list element from the main layout to be drawn relatively to the create newsflash button from the admin layout
+                // Set the list element from the main layout to be drawn
+                // relatively to the create newsflash button from the admin layout
                 ListView list = (ListView) findViewById(R.id.newsflash_list);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) list.getLayoutParams();
                 params.addRule(RelativeLayout.ABOVE, R.id.newsflash_submit);
                 list.setLayoutParams(params);
 
@@ -91,7 +93,7 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
         }
         else {
-            Log.e("G1CHAT", "No currentUser");
+            Log.e(TAG, "No currentUser");
         }
 
         // Initialize list database
@@ -101,34 +103,31 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
         ParseQuery<Newsflash> query = ParseQuery.getQuery(Newsflash.class);
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<Newsflash>() {
-           public void done(List<Newsflash> objects, ParseException e) {
-               if (e == null) {
-                   // Insert all entries into our data list
-                   newsflashArrayList.addAll(objects);
+            public void done(List<Newsflash> objects, ParseException e) {
+                if (e == null) {
+                    // Insert all entries into our data list
+                    newsflashArrayList.addAll(objects);
 
-                   // Configure the adapter which feeds data into the view
-                   newsflashArrayAdapter = new NewsflashAdapter(NewsflashActivity.this,
-                           R.layout.newsflash_item, newsflashArrayList);
-                   ListView listView = (ListView) findViewById(R.id.newsflash_list);
-                   listView.setHeaderDividersEnabled(true);
-                   listView.setDividerHeight(1);
-                   listView.setAdapter(newsflashArrayAdapter);
+                    // Configure the adapter which feeds data into the view
+                    newsflashArrayAdapter = new NewsflashAdapter(NewsflashActivity.this,
+                            R.layout.newsflash_item, newsflashArrayList);
+                    ListView listView = (ListView) findViewById(R.id.newsflash_list);
+                    listView.setHeaderDividersEnabled(true);
+                    listView.setDividerHeight(1);
+                    listView.setAdapter(newsflashArrayAdapter);
 
-                   if(currentUser.getBoolean("isAdmin")) {
-                       registerForContextMenu(listView);
-                       //deleteNews(newsflashArrayList);
-                   }
-               } else {
-                   Log.e("G1CHAT", "Failed to retrieve newsflash objects from parse");
-               }
-           }
+                    if (currentUser.getBoolean("isAdmin")) {
+                        registerForContextMenu(listView);
+                        //deleteNews(newsflashArrayList);
+                    }
+                } else {
+                    Log.e(TAG, "Failed to retrieve newsflash objects from parse");
+                }
+            }
         });
 
         // Setup submit button
         setClick(R.id.newsflash_submit);
-
-        // Setup parse
-        ParseObject.registerSubclass(Newsflash.class);
     }
 
     @Override
@@ -138,10 +137,10 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
                 (AdapterView.AdapterContextMenuInfo) menuInfo;
 
 
-            if (v.getId() == R.id.newsflash_list) {
-                MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.menu_list_item, menu);
-            }
+        if (v.getId() == R.id.newsflash_list) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu_list_item, menu);
+        }
 
     }
 
@@ -169,50 +168,53 @@ public class NewsflashActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Request
+        // Handle Create Newsflash
         if (requestCode == CREATE_NEWSFLASH_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+                // Retrieve objectId
                 String id = data.getStringExtra("id");
 
+                // Query database for the new object
                 ParseQuery<Newsflash> query = ParseQuery.getQuery(Newsflash.class);
                 query.whereEqualTo("objectId", id);
                 query.getFirstInBackground(new GetCallback<Newsflash>() {
                     @Override
                     public void done(Newsflash parseObject, ParseException e) {
+                        // Push to view
                         newsflashArrayList.add(0, parseObject);
                         newsflashArrayAdapter.notifyDataSetChanged();
                     }
                 });
             }
             // Could not create newsflash
-            else {
+            else if(resultCode != RESULT_CANCELED) {
                 Toast.makeText(NewsflashActivity.this, R.string.err_create_newsflash, Toast.LENGTH_LONG)
                         .show();
             }
-        }else if(requestCode == EDIT_MESSAGE_REQUEST){
+        }
+        // Handle Edit Newsflash
+        else if(requestCode == EDIT_MESSAGE_REQUEST){
             if (resultCode == RESULT_OK){
-
+                // Retrieve the updated content
                 newComment = data.getStringExtra("comment");
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Newsflash");
-                query.getInBackground(newsflashArrayList.get(position).getObjectId(), new GetCallback<ParseObject>() {
-                    public void done(ParseObject currentMessage, ParseException e) {
-                        if (e == null) {
-                            currentMessage.put("content",newComment);
-                            currentMessage.saveInBackground();
-                            Toast.makeText(getApplicationContext(), "Edited", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                // Update the database object and save
+                newsflashArrayList.get(position).setContent(newComment);
+                newsflashArrayList.get(position).saveInBackground();
 
+                // Refresh view
+                newsflashArrayAdapter.notifyDataSetChanged();
+            }
+            // Something went wrong
+            else if(resultCode != RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
             }
         }
         else {
-            Toast.makeText(getApplicationContext(), "Error occured", Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "Unhandled onActivityResult requestCode " + requestCode);
         }
-        newsflashArrayList.get(position).setContent(newComment);
-        newsflashArrayAdapter.notifyDataSetChanged();
+
     }
 
     @Override
