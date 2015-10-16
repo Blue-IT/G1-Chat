@@ -7,9 +7,15 @@
         android:visible="true"
         android:orderInCategory="100"
         app:showAsAction="never"/>
-
+    
     <item android:id="@+id/action_user"
         android:title="@string/add_user"
+        android:visible="true"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_chat"
+        android:title="@string/chat"
         android:visible="true"
         android:orderInCategory="100"
         app:showAsAction="never"/>
