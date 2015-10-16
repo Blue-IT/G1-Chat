@@ -26,11 +26,13 @@ public class MasterMenu {
 
     public void newsflash(){
         Intent intent = new Intent(context, NewsflashActivity.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         context.startActivity(intent);
     }
 
     public void user(){
         Intent intent = new Intent(context, UserListActivity.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         context.startActivity(intent);
     }
 
@@ -41,11 +43,13 @@ public class MasterMenu {
 
     public void chat(){
         Intent intent = new Intent(context, ChannelListActivity.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         context.startActivity(intent);
     }
 
     public void admin(){
         Intent intent = new Intent(context, AdminActivity.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         context.startActivity(intent);
     }
 }
