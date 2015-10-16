@@ -28,6 +28,8 @@ import com.parse.SaveCallback;
 import junit.framework.Assert;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -287,8 +289,9 @@ public class ChatActivity extends AppCompatActivity {
         setTitle(newChannel);
 
         // Initiate / Reset message array
-        if (chatMessages != null) {
+        if (chatMessages != null && chatAdapter != null) {
             chatMessages.clear();
+            chatAdapter.notifyDataSetChanged();
         } else {
             chatMessages = new ArrayList<ChatMessage>();
         }
@@ -314,9 +317,9 @@ public class ChatActivity extends AppCompatActivity {
         Log.d(TAG, "loadNewMessages");
         // Create query
         ParseQuery<ChatMessage> query = ParseQuery.getQuery(ChatMessage.class);
-        query.orderByAscending("createdAt");
         query.whereEqualTo("channel", currentChannel);
-        query.setLimit(MESSAGE_HISTORY_LIMIT);
+        query.orderByDescending("createdAt"); // Get the latest messages first
+        query.setLimit(MESSAGE_HISTORY_LIMIT); // Only this number of latest messages
         if(latestMessageDate != null) {
             Log.d(TAG, "Query with createdAt property: " + latestMessageDate);
             query.whereGreaterThan("createdAt", latestMessageDate);
@@ -342,6 +345,9 @@ public class ChatActivity extends AppCompatActivity {
                             }
                         }
                     }
+
+                    // Correct the order - from descending to ascending, so that the latest message is displayed last
+                    Collections.reverse(messages);
 
                     // Insert all remaining entries into our data list
                     chatMessages.addAll(messages);
