@@ -20,6 +20,7 @@ public class MasterMenu {
     public void logout() {
         ParseUser.getCurrentUser().logOut();
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
