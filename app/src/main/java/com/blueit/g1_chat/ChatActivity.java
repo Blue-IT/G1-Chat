@@ -194,10 +194,17 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user, menu);
-        MenuItem item = menu.findItem(R.id.action_chat);
-        item.setVisible(false);
-        invalidateOptionsMenu();
+        if(ParseUser.getCurrentUser().getBoolean("isAdmin")) {
+            getMenuInflater().inflate(R.menu.menu_admin, menu);
+            MenuItem item = menu.findItem(R.id.action_chat);
+            item.setVisible(false);
+            invalidateOptionsMenu();
+        }else{
+            getMenuInflater().inflate(R.menu.menu_user, menu);
+            MenuItem item = menu.findItem(R.id.action_chat);
+            item.setVisible(false);
+            invalidateOptionsMenu();
+        }
         return true;
     }
 
